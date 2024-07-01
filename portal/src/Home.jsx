@@ -4,10 +4,11 @@ import "bootstrap/dist/css/bootstrap.min.css";
 
 function Home() {
   const [users, setUsers] = useState([]);
+  axios.defaults.withCredentials = true;
 
   useEffect(() => {
     axios
-      .get("http://localhost:3000/getUsers")
+      .get("https://deploy-portal-api.vercel.app/getUsers")
       .then((users) => {
         setUsers(users.data);
         console.log(users.data);

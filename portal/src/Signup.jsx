@@ -15,10 +15,12 @@ function Signup() {
   const [city, setCity] = useState();
   const [salary, setSalary] = useState();
 
+  axios.defaults.withCredentials = true;
+
   const handleSubmit = (e) => {
     e.preventDefault();
     axios
-      .post("http://localhost:3000/register", {
+      .post("https://deploy-portal-api.vercel.app/register", {
         name,
         email,
         password,

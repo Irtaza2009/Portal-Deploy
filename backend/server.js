@@ -6,10 +6,17 @@ const UserModel = require("./models/PakistanTechiesInEurope");
 
 const app = express();
 app.use(express.json());
-app.use(cors());
+app.use(
+  cors({
+    origin: ["https://deploy-portal-frontend.vercel.app/"],
+    methods: ["GET", "POST"],
+    credentials: true,
+  })
+);
 
 // MongoDB connection
-const mongoURI = "mongodb://localhost:27017/PakistanTechiesInEurope";
+const mongoURI =
+  "mongodb+srv://irtaza:N3VKunF1B32TLC2u@cluster0.clurvxu.mongodb.net/PakistanTechiesInEurope?retryWrites=true&w=majority&appName=Cluster0";
 mongoose
   .connect(mongoURI, { useNewUrlParser: true, useUnifiedTopology: true })
   .then(() => {
