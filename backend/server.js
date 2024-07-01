@@ -8,7 +8,11 @@ const app = express();
 app.use(express.json());
 app.use(
   cors({
-    origin: ["https://deploy-portal-frontend.vercel.app/"],
+    origin: [
+      "https://deploy-portal-frontend.vercel.app/",
+      "https://deploy-portal-frontend.vercel.app/register",
+      "https://deploy-portal-frontend.vercel.app/home",
+    ],
     methods: ["GET", "POST"],
     credentials: true,
   })
