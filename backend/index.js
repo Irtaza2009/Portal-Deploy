@@ -8,7 +8,10 @@ const app = express();
 
 app.use(
   cors({
-    origin: "https://deploy-portal-frontend.vercel.app", // Allow all origins
+    origin: [
+      "https://deploy-portal-frontend.vercel.app/",
+      "http://localhost:3006",
+    ], // Allow all origins
     methods: ["POST", "GET", "PUT", "DELETE", "OPTIONS"],
     credentials: true,
   })
@@ -55,6 +58,6 @@ app.get("/getUsers", (req, res) => {
     .catch((err) => res.json(err));
 });
 
-app.listen(3000, () => {
-  console.log("Server is running on port 3000");
+app.listen(3007, () => {
+  console.log("Server is running on port 3007");
 });

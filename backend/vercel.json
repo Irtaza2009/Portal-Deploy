@@ -12,7 +12,10 @@
       "dest": "/",
       "methods": ["GET", "POST", "PUT", "DELETE", "PATCH", "OPTIONS"],
       "headers": {
-        "Access-Control-Allow-Origin": "https://deploy-portal-frontend.vercel.app",
+        "Access-Control-Allow-Origin": [
+          "https://deploy-portal-frontend.vercel.app/",
+          "http://localhost:3006"
+        ],
         "Access-Control-Allow-Credentials": "true"
       }
     }
