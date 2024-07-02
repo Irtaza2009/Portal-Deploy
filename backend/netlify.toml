@@ -2,3 +2,4 @@
   for = "/*" # you can configure the correct paths here
   [headers.values]
     access-control-allow-origin = "http://localhost:3006" 
+    access-control-allow-credentials = "true"
