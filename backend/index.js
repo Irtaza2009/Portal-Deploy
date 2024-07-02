@@ -9,7 +9,7 @@ const app = express();
 app.use(
   cors({
     origin: [
-      "https://deploy-portal-frontend.vercel.app/",
+      "https://deploy-portal-frontend.vercel.app",
       "http://localhost:3006",
     ], // Allow all origins
     methods: ["POST", "GET", "PUT", "DELETE", "OPTIONS"],
