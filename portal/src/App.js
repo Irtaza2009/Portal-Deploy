@@ -10,7 +10,7 @@ function App() {
   const handleSubmit = (e) => {
     e.preventDefault();
     axios
-      .post("https://deploy-portal-api.vercel.app/register", {
+      .post("https://deploy-portal-api.netlify.app/register", {
         name,
         email,
         password,
