@@ -10,13 +10,29 @@ function App() {
   const handleSubmit = (e) => {
     e.preventDefault();
     axios
-      .post("https://deploy-portal-api.vercel.app/register", {
-        name,
-        email,
-        password,
+      .post(
+        "https://deploy-portal-api.vercel.app/register",
+        {
+          name,
+          email,
+          password,
+          company,
+          country,
+          city,
+          salary,
+        },
+        { timeout: 10000 } // 10 seconds
+      )
+      .then((result) => {
+        console.log(result);
+        navigate("/login");
       })
-      .then((result) => console.log(result))
-      .catch((err) => console.log(err));
+      .catch((error) => {
+        console.error(error);
+        if (error.code === "ECONNABORTED") {
+          alert("Request timed out. Please try again.");
+        }
+      });
   };
   return (
     <div className="d-flex justify-content-center align-items-center bg-primary vh-100">
