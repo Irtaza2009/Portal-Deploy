@@ -9,7 +9,7 @@ app.use(express.json());
 
 app.use(
   cors({
-    origin: "*", // Allow all origins
+    origin: "https://deploy-portal-frontend.vercel.app", // Allow all origins
     methods: ["POST", "GET", "PUT", "DELETE", "OPTIONS"],
     credentials: true,
   })
