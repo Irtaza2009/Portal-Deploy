@@ -14,6 +14,7 @@ app.use(
     ], // Allow all origins
     methods: ["POST", "GET", "PUT", "DELETE", "OPTIONS"],
     credentials: true,
+    allowedHeaders: ["Content-Type", "Authorization"],
   })
 );
 
