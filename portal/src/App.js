@@ -10,23 +10,12 @@ function App() {
   const handleSubmit = (e) => {
     e.preventDefault();
     axios
-      .post(
-        "https://deploy-portal-api.vercel.app/register",
-        {
-          name,
-          email,
-          password,
-          company,
-          country,
-          city,
-          salary,
-        },
-        { timeout: 10000 } // 10 seconds
-      )
-      .then((result) => {
-        console.log(result);
-        navigate("/login");
+      .post("https://deploy-portal-api.vercel.app/register", {
+        name,
+        email,
+        password,
       })
+      .then((result) => console.log(result))
       .catch((error) => {
         console.error(error);
         if (error.code === "ECONNABORTED") {
