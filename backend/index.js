@@ -7,23 +7,19 @@ const UserModel = require("./models/PakistanTechiesInEurope");
 const app = express();
 app.use(express.json());
 
-const allowedOrigins = ["https://deploy-portal-frontend.vercel.app"];
-
-app.use(
-  cors({
-    origin: function (origin, callback) {
-      if (!origin || allowedOrigins.indexOf(origin) !== -1) {
-        callback(null, true);
-      } else {
-        callback(new Error("Not allowed by CORS"));
-      }
-    },
-    methods: ["POST", "GET", "PUT", "DELETE", "OPTIONS"],
-    credentials: true,
-  })
-);
-
-app.options("*", cors()); // preflight OPTIONS request for all routes
+app.use(function (req, res, next) {
+  res.header(
+    "Access-Control-Allow-Origin",
+    "https://deploy-portal-frontend.vercel.app"
+  ); // update to match the domain you will make the request from
+  res.header(
+    "Access-Control-Allow-Headers",
+    "Origin, X-Requested-With, Content-Type, Accept"
+  );
+  res.header("Access-Control-Allow-Methods", "GET, POST, PUT, DELETE, OPTIONS");
+  res.header("Access-Control-Allow-Credentials", "true");
+  next();
+});
 
 // MongoDB connection
 const mongoURI =
