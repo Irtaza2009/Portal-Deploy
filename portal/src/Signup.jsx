@@ -2,6 +2,8 @@ import React, { useState } from "react";
 import { Link } from "react-router-dom";
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
+import { ToastContainer, toast } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
 import "./Signup.css";
 
 function Signup() {
@@ -31,24 +33,40 @@ function Signup() {
         salary,
       })
       .then((result) => {
-        console.log(result);
+        toast.success("Registration successful!");
         navigate("/login");
       })
-      .catch((error) => console.error(error));
+      .catch((error) => {
+        console.error(error);
+        toast.error("An error occurred. Please try again.");
+      });
   };
 
   const handleNext = () => {
     const form = document.getElementById("signup-form");
     if (form.reportValidity()) {
       setStep(2);
+    } else {
+      toast.error("Please fill in all the required details.");
+    }
+  };
+
+  const handleRegisterClick = (e) => {
+    e.preventDefault();
+    const form = document.getElementById("signup-form");
+    if (form.reportValidity()) {
+      handleSubmit(e);
+    } else {
+      toast.error("Please fill in all the required details.");
     }
   };
 
   return (
     <div className="container">
+      <ToastContainer />
       <div className="form-container">
         <h2>Register</h2>
-        <form id="signup-form" onSubmit={handleSubmit}>
+        <form id="signup-form">
           {step === 1 && (
             <>
               <div className="form-group">
@@ -124,6 +142,7 @@ function Signup() {
                   name="country"
                   value={country}
                   onChange={(e) => setCountry(e.target.value)}
+                  required
                 />
               </div>
               <div className="form-group">
@@ -137,6 +156,7 @@ function Signup() {
                   name="city"
                   value={city}
                   onChange={(e) => setCity(e.target.value)}
+                  required
                 />
               </div>
               <div className="form-group">
@@ -150,6 +170,7 @@ function Signup() {
                   placeholder="In Euros"
                   value={salary}
                   onChange={(e) => setSalary(e.target.value)}
+                  required
                 />
               </div>
               <button
@@ -159,7 +180,11 @@ function Signup() {
               >
                 ← Back
               </button>
-              <button type="submit" className="btn-register">
+              <button
+                type="submit"
+                className="btn-register"
+                onClick={handleRegisterClick}
+              >
                 Register
               </button>
             </>

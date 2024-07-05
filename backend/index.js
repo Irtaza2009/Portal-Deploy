@@ -39,11 +39,10 @@ app.post("/login", (req, res) => {
   UserModel.findOne({ email: email }).then((user) => {
     if (user) {
       bcrypt.compare(password, user.password, (err, response) => {
-        if (err) {
-          res.json("Invalid Password");
-        }
         if (response) {
           res.json("Successfully Logged In");
+        } else {
+          res.json("Invalid Password");
         }
       });
     } else {
