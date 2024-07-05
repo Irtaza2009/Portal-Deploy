@@ -1,6 +1,8 @@
 import React, { useEffect, useState } from "react";
 import axios from "axios";
-import "./Home.css"; // Import the custom CSS
+import "./Home.css";
+import "react-toastify/dist/ReactToastify.css";
+import { ToastContainer } from "react-toastify";
 
 function Home() {
   const [users, setUsers] = useState([]);
@@ -63,6 +65,7 @@ function Home() {
 
   return (
     <div className="container">
+      <ToastContainer />
       <div className="table-container">
         <table>
           <thead>

@@ -2,6 +2,8 @@ import React, { useState } from "react";
 import { Link } from "react-router-dom";
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
+import { ToastContainer, toast } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
 import "./Login.css";
 
 function Login() {
@@ -14,16 +16,22 @@ function Login() {
     axios
       .post("https://deploy-portal-api.vercel.app/login", { email, password })
       .then((result) => {
-        console.log(result);
         if (result.data === "Successfully Logged In") {
+          toast.success("Successfully Logged In!");
           navigate("/home");
+        } else {
+          toast.error(result.data);
         }
       })
-      .catch((error) => console.error(error));
+      .catch((error) => {
+        console.error(error);
+        toast.error("An error occurred. Please try again.");
+      });
   };
 
   return (
     <div className="container">
+      <ToastContainer />
       <div className="form-container">
         <h2>Login</h2>
         <form onSubmit={handleSubmit}>
