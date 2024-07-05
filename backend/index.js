@@ -4,6 +4,8 @@ const cors = require("cors");
 
 const UserModel = require("./models/PakistanTechiesInEurope");
 
+const bcrypt = require("bcrypt");
+
 const app = express();
 
 app.use(
@@ -36,11 +38,14 @@ app.post("/login", (req, res) => {
   const { email, password } = req.body;
   UserModel.findOne({ email: email }).then((user) => {
     if (user) {
-      if (user.password === password) {
-        res.json("Successfully Logged In");
-      } else {
-        res.json("Invalid Password");
-      }
+      bcrypt.compare(password, user.password, (err, response) => {
+        if (err) {
+          res.json("Invalid Password");
+        }
+        if (response) {
+          res.json("Successfully Logged In");
+        }
+      });
     } else {
       res.json("Not Registered");
     }
@@ -48,9 +53,24 @@ app.post("/login", (req, res) => {
 });
 
 app.post("/register", (req, res) => {
-  UserModel.create(req.body)
-    .then((user) => res.json(user))
-    .catch((error) => res.json(error));
+  const { name, email, country, company, city, salary, password } = req.body;
+
+  bcrypt
+    .hash(password, 10)
+    .then((hash) => {
+      UserModel.create({
+        name,
+        email,
+        country,
+        company,
+        city,
+        salary,
+        password: hash,
+      })
+        .then((user) => res.json(user))
+        .catch((error) => res.json(error));
+    })
+    .catch((error) => console.log(error.message));
 });
 
 app.get("/getUsers", (req, res) => {
