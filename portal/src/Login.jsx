@@ -6,6 +6,8 @@ import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import "./Login.css";
 
+var loggedIn = false;
+
 function Login() {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
@@ -18,6 +20,7 @@ function Login() {
       .then((result) => {
         if (result.data === "Successfully Logged In") {
           toast.success("Successfully Logged In!");
+          loggedIn = true;
           navigate("/home");
         } else {
           toast.error(result.data);
@@ -76,3 +79,5 @@ function Login() {
 }
 
 export default Login;
+
+export var loggedIn;

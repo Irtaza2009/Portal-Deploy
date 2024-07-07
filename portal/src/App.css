@@ -1,0 +1,56 @@
+/* App.css */
+
+.app-container {
+  text-align: center;
+  padding: 50px;
+  background-color: #f8f9fa;
+  border-radius: 10px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  max-width: 800px;
+  margin: 50px auto;
+}
+
+.app-container h1 {
+  font-size: 2.5rem;
+  color: #007bff;
+  margin-bottom: 20px;
+}
+
+.app-container p {
+  font-size: 1.2rem;
+  color: #343a40;
+  line-height: 1.5;
+  margin-bottom: 30px;
+}
+
+.button-group {
+  display: block;
+  justify-content: center;
+  gap: 20px;
+}
+
+.button-group .btn {
+  padding: 10px 20px;
+  font-size: 1rem;
+  cursor: pointer;
+}
+
+.button-group .btn-primary {
+  background-color: #007bff;
+  color: white;
+  border: none;
+}
+
+.button-group .btn-primary:hover {
+  background-color: #0056b3;
+}
+
+.button-group .btn-secondary {
+  background-color: #007bff;
+  color: white;
+  border: none;
+}
+
+.button-group .btn-secondary:hover {
+  background-color: #0056b3;
+}

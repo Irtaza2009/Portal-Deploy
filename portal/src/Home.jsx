@@ -3,6 +3,9 @@ import axios from "axios";
 import "./Home.css";
 import "react-toastify/dist/ReactToastify.css";
 import { ToastContainer } from "react-toastify";
+import { useNavigate } from "react-router-dom";
+
+import { loggedIn } from "./Login";
 
 function Home() {
   const [users, setUsers] = useState([]);
@@ -10,6 +13,8 @@ function Home() {
     key: null,
     direction: "ascending",
   });
+
+  const navigate = useNavigate();
 
   axios.defaults.withCredentials = true;
 
@@ -63,41 +68,49 @@ function Home() {
     return "";
   };
 
-  return (
-    <div className="container">
-      <ToastContainer />
-      <div className="table-container">
-        <table>
-          <thead>
-            <tr>
-              <th onClick={() => sortUsers("name")}>Name{getArrow("name")}</th>
-              <th onClick={() => sortUsers("company")}>
-                Company{getArrow("company")}
-              </th>
-              <th onClick={() => sortUsers("country")}>
-                Country{getArrow("country")}
-              </th>
-              <th onClick={() => sortUsers("city")}>City{getArrow("city")}</th>
-              <th onClick={() => sortUsers("salary")}>
-                Salary{getArrow("salary")}
-              </th>
-            </tr>
-          </thead>
-          <tbody>
-            {users.map((user) => (
-              <tr key={user._id}>
-                <td>{user.name}</td>
-                <td>{user.company}</td>
-                <td>{user.country}</td>
-                <td>{user.city}</td>
-                <td>{user.salary}</td>
+  if (loggedIn) {
+    return (
+      <div className="container">
+        <ToastContainer />
+        <div className="table-container">
+          <table>
+            <thead>
+              <tr>
+                <th onClick={() => sortUsers("name")}>
+                  Name{getArrow("name")}
+                </th>
+                <th onClick={() => sortUsers("company")}>
+                  Company{getArrow("company")}
+                </th>
+                <th onClick={() => sortUsers("country")}>
+                  Country{getArrow("country")}
+                </th>
+                <th onClick={() => sortUsers("city")}>
+                  City{getArrow("city")}
+                </th>
+                <th onClick={() => sortUsers("salary")}>
+                  Salary{getArrow("salary")}
+                </th>
               </tr>
-            ))}
-          </tbody>
-        </table>
+            </thead>
+            <tbody>
+              {users.map((user) => (
+                <tr key={user._id}>
+                  <td>{user.name}</td>
+                  <td>{user.company}</td>
+                  <td>{user.country}</td>
+                  <td>{user.city}</td>
+                  <td>{user.salary}</td>
+                </tr>
+              ))}
+            </tbody>
+          </table>
+        </div>
       </div>
-    </div>
-  );
+    );
+  } else {
+    navigate("/login");
+  }
 }
 
 export default Home;
