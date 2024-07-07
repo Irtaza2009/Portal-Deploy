@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 import axios from "axios";
-import "./Home.css";
+import "./App.css";
 import "react-toastify/dist/ReactToastify.css";
 import { ToastContainer } from "react-toastify";
 import { useNavigate } from "react-router-dom";
@@ -70,10 +70,10 @@ function Home() {
 
   if (loggedIn) {
     return (
-      <div className="container">
+      <div className="home-container">
         <ToastContainer />
-        <div className="table-container">
-          <table>
+        <div className="home-table-container">
+          <table className="home-table">
             <thead>
               <tr>
                 <th onClick={() => sortUsers("name")}>

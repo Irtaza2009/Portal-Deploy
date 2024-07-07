@@ -4,64 +4,89 @@ import axios from "axios";
 import { useNavigate } from "react-router-dom";
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
-import "./Login.css";
+import "./App.css";
 
-var loggedIn = false;
+let loggedIn = false;
 
 function Login() {
-  const [email, setEmail] = useState("");
-  const [password, setPassword] = useState("");
+  const [user, setUser] = useState({ username: "", password: "" });
+  const [error, setError] = useState("");
   const navigate = useNavigate();
 
-  const handleSubmit = (e) => {
-    e.preventDefault();
-    axios
-      .post("https://deploy-portal-api.vercel.app/login", { email, password })
-      .then((result) => {
-        if (result.data === "Successfully Logged In") {
-          toast.success("Successfully Logged In!");
-          loggedIn = true;
-          navigate("/home");
-        } else {
-          toast.error(result.data);
-        }
-      })
-      .catch((error) => {
-        console.error(error);
-        toast.error("An error occurred. Please try again.");
+  const handleChange = (event) => {
+    setUser({ ...user, [event.target.name]: event.target.value });
+  };
+
+  const handleSubmit = async (event) => {
+    event.preventDefault();
+    try {
+      const response = await axios.post(
+        "https://deploy-portal-api.vercel.app/login",
+        user
+      );
+      console.log(response.data);
+      if (response.data.loggedIn === true) {
+        loggedIn = true;
+        navigate("/home");
+        toast.success("Login Successful!", {
+          position: "top-center",
+          autoClose: 3000,
+          hideProgressBar: true,
+          closeOnClick: true,
+          pauseOnHover: true,
+          draggable: true,
+          progress: undefined,
+        });
+      } else {
+        toast.error("Login failed. Invalid username or password.", {
+          position: "top-center",
+          autoClose: 3000,
+          hideProgressBar: true,
+          closeOnClick: true,
+          pauseOnHover: true,
+          draggable: true,
+          progress: undefined,
+        });
+      }
+    } catch (err) {
+      setError(err.message);
+      toast.error("An error occurred. Please try again.", {
+        position: "top-center",
+        autoClose: 3000,
+        hideProgressBar: true,
+        closeOnClick: true,
+        pauseOnHover: true,
+        draggable: true,
+        progress: undefined,
       });
+    }
   };
 
   return (
-    <div className="container">
+    <div className="login-container">
       <ToastContainer />
-      <div className="form-container">
+      <div className="login-form-container form-container">
         <h2>Login</h2>
         <form onSubmit={handleSubmit}>
           <div className="form-group">
-            <label htmlFor="email">
-              <strong>Email</strong>
-            </label>
+            <label htmlFor="username">Username</label>
             <input
-              type="email"
-              placeholder="Enter Email"
-              autoComplete="off"
-              name="email"
-              value={email}
-              onChange={(e) => setEmail(e.target.value)}
+              type="text"
+              name="username"
+              id="username"
+              value={user.username}
+              onChange={handleChange}
               required
             />
           </div>
           <div className="form-group">
-            <label htmlFor="password">
-              <strong>Password</strong>
-            </label>
+            <label htmlFor="password">Password</label>
             <input
               type="password"
-              placeholder="Enter Password"
               name="password"
-              value={password}
-              onChange={(e) => setPassword(e.target.value)}
+              id="password"
+              value={user.password}
+              onChange={handleChange}
               required
             />
           </div>
@@ -69,15 +94,16 @@ function Login() {
             Login
           </button>
         </form>
-        <p>Don't have an account?</p>
-        <Link to="/register" className="link-button">
-          Sign Up
-        </Link>
+        <p>
+          Don't have an account?{" "}
+          <Link to="/register" className="link-button">
+            Register
+          </Link>
+        </p>
       </div>
     </div>
   );
 }
 
 export default Login;
-
-export var loggedIn;
+export { loggedIn };
