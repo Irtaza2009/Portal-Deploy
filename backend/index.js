@@ -69,7 +69,11 @@ app.post("/login", (req, res) => {
           const token = jwt.sign({ email: user.email }, jwtSecretKey, {
             expiresIn: "1d",
           });
-          res.cookie("token", token, { httpOnly: true });
+          res.cookie("token", token, {
+            httpOnly: true,
+            secure: true, // Set secure to true if using HTTPS
+            sameSite: "None",
+          });
           res.json("Successfully Logged In");
         } else {
           res.json("Invalid Password");

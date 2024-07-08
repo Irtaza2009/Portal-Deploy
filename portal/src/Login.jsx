@@ -6,8 +6,6 @@ import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import "./Login.css";
 
-var loggedIn = false;
-
 var local = "http://localhost:3007/login";
 var deployed = "https://deploy-portal-api.vercel.app/login";
 
@@ -25,7 +23,7 @@ function Login() {
       .then((result) => {
         if (result.data === "Successfully Logged In") {
           toast.success("Successfully Logged In!");
-          loggedIn = true;
+
           navigate("/home");
         } else {
           toast.error(result.data);
@@ -84,5 +82,3 @@ function Login() {
 }
 
 export default Login;
-
-export var loggedIn;
