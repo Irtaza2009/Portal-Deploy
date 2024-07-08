@@ -8,15 +8,20 @@ import "./Login.css";
 
 var loggedIn = false;
 
+var local = "http://localhost:3007/login";
+var deployed = "https://deploy-portal-api.vercel.app/login";
+
 function Login() {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const navigate = useNavigate();
 
+  axios.defaults.withCredentials = true;
+
   const handleSubmit = (e) => {
     e.preventDefault();
     axios
-      .post("https://deploy-portal-api.vercel.app/login", { email, password })
+      .post(deployed, { email, password })
       .then((result) => {
         if (result.data === "Successfully Logged In") {
           toast.success("Successfully Logged In!");

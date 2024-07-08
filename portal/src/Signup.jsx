@@ -6,6 +6,9 @@ import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import "./Signup.css";
 
+var local = "http://localhost:3007/register";
+var deployed = "https://deploy-portal-api.vercel.app/register";
+
 function Signup() {
   const [step, setStep] = useState(1); // State to manage form steps
   const [name, setName] = useState("");
@@ -23,7 +26,7 @@ function Signup() {
   const handleSubmit = (e) => {
     e.preventDefault();
     axios
-      .post("https://deploy-portal-api.vercel.app/register", {
+      .post(deployed, {
         name,
         email,
         password,

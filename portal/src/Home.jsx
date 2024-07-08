@@ -1,3 +1,5 @@
+// Home.jsx
+
 import React, { useEffect, useState } from "react";
 import axios from "axios";
 import "./Home.css";
@@ -5,7 +7,11 @@ import "react-toastify/dist/ReactToastify.css";
 import { ToastContainer } from "react-toastify";
 import { useNavigate } from "react-router-dom";
 
-import { loggedIn } from "./Login";
+var local = "http://localhost:3007/home";
+var deployedHome = "https://deploy-portal-api.vercel.app/home";
+
+var localGet = "http://localhost:3007/getUsers";
+var deployedGet = "https://deploy-portal-api.vercel.app/getUsers";
 
 function Home() {
   const [users, setUsers] = useState([]);
@@ -20,13 +26,26 @@ function Home() {
 
   useEffect(() => {
     axios
-      .get("https://deploy-portal-api.vercel.app/getUsers")
-      .then((response) => {
-        setUsers(response.data);
-        console.log(response.data);
+      .get(deployedHome)
+      .then((result) => {
+        console.log(result.data);
+        if (result.data === "You are authenticated") {
+          axios
+            .get(deployedGet)
+            .then((response) => {
+              setUsers(response.data);
+              console.log(response.data);
+            })
+            .catch((err) => console.log(err));
+        } else {
+          navigate("/login");
+        }
       })
-      .catch((err) => console.log(err));
-  }, []);
+      .catch((err) => {
+        console.log(err);
+        navigate("/login");
+      });
+  }, [navigate]);
 
   const sortUsers = (key) => {
     let direction = "ascending";
@@ -68,49 +87,41 @@ function Home() {
     return "";
   };
 
-  if (loggedIn) {
-    return (
-      <div className="container">
-        <ToastContainer />
-        <div className="table-container">
-          <table>
-            <thead>
-              <tr>
-                <th onClick={() => sortUsers("name")}>
-                  Name{getArrow("name")}
-                </th>
-                <th onClick={() => sortUsers("company")}>
-                  Company{getArrow("company")}
-                </th>
-                <th onClick={() => sortUsers("country")}>
-                  Country{getArrow("country")}
-                </th>
-                <th onClick={() => sortUsers("city")}>
-                  City{getArrow("city")}
-                </th>
-                <th onClick={() => sortUsers("salary")}>
-                  Salary{getArrow("salary")}
-                </th>
+  return (
+    <div className="container">
+      <ToastContainer />
+      <div className="table-container">
+        <table>
+          <thead>
+            <tr>
+              <th onClick={() => sortUsers("name")}>Name{getArrow("name")}</th>
+              <th onClick={() => sortUsers("company")}>
+                Company{getArrow("company")}
+              </th>
+              <th onClick={() => sortUsers("country")}>
+                Country{getArrow("country")}
+              </th>
+              <th onClick={() => sortUsers("city")}>City{getArrow("city")}</th>
+              <th onClick={() => sortUsers("salary")}>
+                Salary{getArrow("salary")}
+              </th>
+            </tr>
+          </thead>
+          <tbody>
+            {users.map((user) => (
+              <tr key={user._id}>
+                <td>{user.name}</td>
+                <td>{user.company}</td>
+                <td>{user.country}</td>
+                <td>{user.city}</td>
+                <td>{user.salary}</td>
               </tr>
-            </thead>
-            <tbody>
-              {users.map((user) => (
-                <tr key={user._id}>
-                  <td>{user.name}</td>
-                  <td>{user.company}</td>
-                  <td>{user.country}</td>
-                  <td>{user.city}</td>
-                  <td>{user.salary}</td>
-                </tr>
-              ))}
-            </tbody>
-          </table>
-        </div>
+            ))}
+          </tbody>
+        </table>
       </div>
-    );
-  } else {
-    navigate("/login");
-  }
+    </div>
+  );
 }
 
 export default Home;
