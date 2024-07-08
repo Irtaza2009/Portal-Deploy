@@ -105,6 +105,7 @@ function Home() {
               <th onClick={() => sortUsers("salary")}>
                 Salary{getArrow("salary")}
               </th>
+              <th onClick={() => sortUsers("type")}>Type{getArrow("type")}</th>
             </tr>
           </thead>
           <tbody>
@@ -115,6 +116,7 @@ function Home() {
                 <td>{user.country}</td>
                 <td>{user.city}</td>
                 <td>{user.salary}</td>
+                <td>{user.userType}</td>
               </tr>
             ))}
           </tbody>

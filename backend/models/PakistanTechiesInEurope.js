@@ -1,3 +1,5 @@
+// PakistanTechiesInEurope.js
+
 const mongoose = require("mongoose");
 
 // User schema and model
@@ -18,7 +20,7 @@ const UserSchema = new mongoose.Schema({
   about: String,
   email: { type: String, required: true, unique: true },
   password: { type: String, required: true },
-  userType: { type: String, required: true },
+  userType: String,
 });
 
 const UserModel = mongoose.model("User", UserSchema);

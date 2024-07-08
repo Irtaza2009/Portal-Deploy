@@ -33,7 +33,7 @@ function Signup() {
     } else {
       e.preventDefault();
       axios
-        .post(local, {
+        .post(deployed, {
           name,
           email,
           password,
@@ -57,6 +57,7 @@ function Signup() {
   const handleNext = () => {
     const form = document.getElementById("signup-form");
     if (form.reportValidity()) {
+      console.log(userType);
       setStep(2);
     } else {
       toast.error("Please fill in all the required details.");
@@ -67,6 +68,7 @@ function Signup() {
     e.preventDefault();
     const form = document.getElementById("signup-form");
     if (form.reportValidity()) {
+      console.log(userType);
       handleSubmit(e);
     } else {
       toast.error("Please fill in all the required details.");

@@ -20,6 +20,7 @@ app.use(
       "https://deploy-portal-frontend.vercel.app",
       "http://localhost:3006",
       "https://pteu-data.mujtabamehdi.com",
+      "https://postman.com",
     ], // Allow all origins
     methods: ["POST", "GET", "PUT", "DELETE", "OPTIONS"],
     credentials: true,
@@ -87,7 +88,7 @@ app.post("/login", (req, res) => {
 
 // User registration
 app.post("/register", (req, res) => {
-  const { name, email, country, company, city, salary, password, userType } =
+  const { name, email, country, company, city, salary, userType, password } =
     req.body;
 
   bcrypt
@@ -100,10 +101,13 @@ app.post("/register", (req, res) => {
         company,
         city,
         salary,
-        password: hash,
         userType,
+        password: hash,
       })
-        .then((user) => res.json(user))
+        .then((user) => {
+          res.json(user);
+          console.log(user);
+        })
         .catch((error) => res.json(error));
     })
     .catch((error) => console.log(error.message));
