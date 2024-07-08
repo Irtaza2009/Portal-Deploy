@@ -1,19 +1,25 @@
+// index.js
+
 const express = require("express");
 const mongoose = require("mongoose");
 const cors = require("cors");
+const bcrypt = require("bcrypt");
+const jwt = require("jsonwebtoken");
+const cookieParser = require("cookie-parser");
 
 const UserModel = require("./models/PakistanTechiesInEurope");
 
-const bcrypt = require("bcrypt");
-
 const app = express();
 
+const jwtSecretKey = "jwt-secret-key";
+
+// Middleware for CORS and JSON parsing
 app.use(
   cors({
     origin: [
-      "https://deploy-portal-frontend.vercel.app",
+      // "https://deploy-portal-frontend.vercel.app",
       "http://localhost:3006",
-      "https://pteu-data.mujtabamehdi.com",
+      // "https://pteu-data.mujtabamehdi.com",
     ], // Allow all origins
     methods: ["POST", "GET", "PUT", "DELETE", "OPTIONS"],
     credentials: true,
@@ -22,6 +28,7 @@ app.use(
 );
 
 app.use(express.json());
+app.use(cookieParser());
 
 // MongoDB connection
 const mongoURI =
@@ -35,12 +42,34 @@ mongoose
     console.log("Error connecting to MongoDB:", err.message);
   });
 
+// Middleware to verify JWT
+const verifyUser = (req, res, next) => {
+  const token = req.cookies.token;
+  if (!token) {
+    return res.json("You are not authenticated");
+  } else {
+    jwt.verify(token, jwtSecretKey, (err, decoded) => {
+      if (err) {
+        return res.json("You are not authenticated");
+      } else {
+        req.user = decoded;
+        next();
+      }
+    });
+  }
+};
+
+// User login
 app.post("/login", (req, res) => {
   const { email, password } = req.body;
   UserModel.findOne({ email: email }).then((user) => {
     if (user) {
       bcrypt.compare(password, user.password, (err, response) => {
         if (response) {
+          const token = jwt.sign({ email: user.email }, jwtSecretKey, {
+            expiresIn: "1d",
+          });
+          res.cookie("token", token, { httpOnly: true });
           res.json("Successfully Logged In");
         } else {
           res.json("Invalid Password");
@@ -52,6 +81,7 @@ app.post("/login", (req, res) => {
   });
 });
 
+// User registration
 app.post("/register", (req, res) => {
   const { name, email, country, company, city, salary, password } = req.body;
 
@@ -73,10 +103,17 @@ app.post("/register", (req, res) => {
     .catch((error) => console.log(error.message));
 });
 
+// Get all users (public)
 app.get("/getUsers", (req, res) => {
   UserModel.find()
     .then((users) => res.json(users))
     .catch((err) => res.json(err));
+});
+
+// Authenticated route
+app.get("/home", verifyUser, (req, res) => {
+  console.log("Request received for /home");
+  return res.json("You are authenticated");
 });
 
 app.listen(3007, () => {
