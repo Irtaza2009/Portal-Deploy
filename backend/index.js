@@ -87,7 +87,8 @@ app.post("/login", (req, res) => {
 
 // User registration
 app.post("/register", (req, res) => {
-  const { name, email, country, company, city, salary, password } = req.body;
+  const { name, email, country, company, city, salary, password, userType } =
+    req.body;
 
   bcrypt
     .hash(password, 10)
@@ -100,6 +101,7 @@ app.post("/register", (req, res) => {
         city,
         salary,
         password: hash,
+        userType,
       })
         .then((user) => res.json(user))
         .catch((error) => res.json(error));

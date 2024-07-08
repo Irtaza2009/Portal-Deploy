@@ -21,28 +21,37 @@ function Signup() {
   const [city, setCity] = useState("");
   const [salary, setSalary] = useState("");
 
+  const [userType, setUserType] = useState("");
+  const [passKey, setPassKey] = useState("");
+
   axios.defaults.withCredentials = true;
 
   const handleSubmit = (e) => {
-    e.preventDefault();
-    axios
-      .post(deployed, {
-        name,
-        email,
-        password,
-        company,
-        country,
-        city,
-        salary,
-      })
-      .then((result) => {
-        toast.success("Registration successful!");
-        navigate("/login");
-      })
-      .catch((error) => {
-        console.error(error);
-        toast.error("An error occurred. Please try again.");
-      });
+    if (userType == "Admin" && passKey != "SuperDuperUser") {
+      e.preventDefault();
+      toast.error("Invalid Passkey");
+    } else {
+      e.preventDefault();
+      axios
+        .post(local, {
+          name,
+          email,
+          password,
+          company,
+          country,
+          city,
+          salary,
+          userType,
+        })
+        .then((result) => {
+          toast.success("Registration successful!");
+          navigate("/login");
+        })
+        .catch((error) => {
+          console.error(error);
+          toast.error("An error occurred. Please try again.");
+        });
+    }
   };
 
   const handleNext = () => {
@@ -72,6 +81,42 @@ function Signup() {
         <form id="signup-form">
           {step === 1 && (
             <>
+              <div>
+                Register As
+                <input
+                  type="radio"
+                  name="UserType"
+                  autoComplete="off"
+                  value="User"
+                  onChange={(e) => setUserType(e.target.value)}
+                  required
+                />
+                User
+                <input
+                  type="radio"
+                  name="UserType"
+                  autoComplete="off"
+                  value="Admin"
+                  onChange={(e) => setUserType(e.target.value)}
+                  required
+                />
+                Admin
+              </div>
+              {userType == "Admin" ? (
+                <div className="form-group">
+                  <label>PassKey</label>
+                  <input
+                    type="text"
+                    placeholder="Enter Passkey"
+                    autoComplete="off"
+                    name="passkey"
+                    value={passKey}
+                    onChange={(e) => setPassKey(e.target.value)}
+                    required
+                  />
+                </div>
+              ) : null}
+
               <div className="form-group">
                 <label htmlFor="name">
                   <strong>Name</strong>
