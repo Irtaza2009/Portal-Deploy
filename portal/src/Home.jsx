@@ -1,12 +1,9 @@
-// Home.jsx
-
 import React, { useEffect, useState } from "react";
 import axios from "axios";
 import "./Home.css";
+import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
-import { ToastContainer } from "react-toastify";
 import { useNavigate } from "react-router-dom";
-
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 
 var local = "http://localhost:3007/home";
@@ -25,6 +22,8 @@ function Home() {
     direction: "ascending",
   });
 
+  const [searchTerm, setSearchTerm] = useState("");
+
   const navigate = useNavigate();
 
   axios.defaults.withCredentials = true;
@@ -33,21 +32,22 @@ function Home() {
     axios
       .get(deployedHome)
       .then((result) => {
-        console.log(result.data);
         if (result.data === "You are authenticated") {
           axios
             .get(deployedGet)
             .then((response) => {
               setUsers(response.data);
-              console.log(response.data);
             })
-            .catch((err) => console.log(err));
+            .catch((err) => {
+              console.error("Error fetching users:", err);
+              toast.error("Failed to fetch user data. Please try again.");
+            });
         } else {
           navigate("/login");
         }
       })
       .catch((err) => {
-        console.log(err);
+        console.error("Authentication error:", err);
         navigate("/login");
       });
   }, [navigate]);
@@ -56,13 +56,13 @@ function Home() {
     axios
       .get(deployedLogOut)
       .then((res) => {
-        console.log(res.data);
         if (res.data.status) {
           navigate("/login");
         }
       })
       .catch((err) => {
-        console.log(err);
+        console.error("Logout error:", err);
+        toast.error("Failed to logout. Please try again.");
       });
   };
 
@@ -73,15 +73,13 @@ function Home() {
     }
 
     const sortedUsers = [...users].sort((a, b) => {
-      let valueA = a[key] || ""; // Default to empty string if undefined
+      let valueA = a[key] || "";
       let valueB = b[key] || "";
 
-      // Handle numeric sorting for salary (assuming it's stored as string)
       if (key === "salary") {
-        valueA = parseFloat(valueA.replace(/,/g, "") || 0); // Convert string to number (remove commas)
+        valueA = parseFloat(valueA.replace(/,/g, "") || 0);
         valueB = parseFloat(valueB.replace(/,/g, "") || 0);
       } else {
-        // Handle string comparison for other fields
         valueA = valueA.toString().toLowerCase();
         valueB = valueB.toString().toLowerCase();
       }
@@ -99,6 +97,14 @@ function Home() {
     setSortConfig({ key, direction });
   };
 
+  const filterUsers = (searchTerm) => {
+    return users.filter((user) =>
+      Object.values(user).some((value) =>
+        value.toString().toLowerCase().includes(searchTerm.toLowerCase())
+      )
+    );
+  };
+
   const getArrow = (key) => {
     if (sortConfig.key === key) {
       return sortConfig.direction === "ascending" ? " \u2191" : " \u2193";
@@ -110,11 +116,18 @@ function Home() {
     <div className="container">
       <ToastContainer />
       <div className="top-right">
-        <button onClick={handleLogout}>
-          Logout
-          <FontAwesomeIcon icon="fa-solid fa-right-from-bracket" />
+        <input
+          type="text"
+          placeholder="Search users..."
+          value={searchTerm}
+          onChange={(e) => setSearchTerm(e.target.value)}
+          className="search-input"
+        />
+        <button className="button" onClick={handleLogout}>
+          Logout <FontAwesomeIcon icon="sign-out-alt" />
         </button>
       </div>
+
       <div className="table-container">
         <table>
           <thead>
@@ -134,7 +147,7 @@ function Home() {
             </tr>
           </thead>
           <tbody>
-            {users.map((user) => (
+            {filterUsers(searchTerm).map((user) => (
               <tr key={user._id}>
                 <td>{user.name}</td>
                 <td>{user.company}</td>
