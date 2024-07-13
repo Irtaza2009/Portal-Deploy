@@ -4,9 +4,11 @@ import axios from "axios";
 import { useNavigate } from "react-router-dom";
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
+import Select from "react-select";
+import countryList from "react-select-country-list";
+import cities from "./cities.json"; // Sample list of cities
 import "./Signup.css";
 
-var local = "http://localhost:3007/register";
 var deployed = "https://deploy-portal-api.vercel.app/register";
 
 function Signup() {
@@ -17,12 +19,14 @@ function Signup() {
   const navigate = useNavigate();
 
   const [company, setCompany] = useState("");
-  const [country, setCountry] = useState("");
-  const [city, setCity] = useState("");
+  const [country, setCountry] = useState(null);
+  const [city, setCity] = useState(null);
   const [salary, setSalary] = useState("");
 
   const [userType, setUserType] = useState("");
   const [passKey, setPassKey] = useState("");
+
+  const countryOptions = countryList().getData();
 
   axios.defaults.withCredentials = true;
 
@@ -37,8 +41,8 @@ function Signup() {
           email,
           password,
           company,
-          country,
-          city,
+          country: country.label,
+          city: city.label,
           salary,
           userType,
         })
@@ -177,25 +181,23 @@ function Signup() {
               </div>
               <div className="form-group">
                 <label htmlFor="country">Country</label>
-                <input
-                  type="text"
-                  placeholder="Enter Country Name"
-                  autoComplete="off"
-                  name="country"
+                <Select
+                  options={countryOptions}
                   value={country}
-                  onChange={(e) => setCountry(e.target.value)}
+                  onChange={(option) => setCountry(option)}
+                  placeholder="Select Country"
+                  isClearable
                   required
                 />
               </div>
               <div className="form-group">
                 <label htmlFor="city">City</label>
-                <input
-                  type="text"
-                  placeholder="Enter City Name"
-                  autoComplete="off"
-                  name="city"
+                <Select
+                  options={cities}
                   value={city}
-                  onChange={(e) => setCity(e.target.value)}
+                  onChange={(option) => setCity(option)}
+                  placeholder="Select City"
+                  isClearable
                   required
                 />
               </div>
