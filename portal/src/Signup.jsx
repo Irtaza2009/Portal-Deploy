@@ -27,11 +27,10 @@ function Signup() {
   axios.defaults.withCredentials = true;
 
   const handleSubmit = (e) => {
-    if (userType == "Admin" && passKey != "SuperDuperUser") {
-      e.preventDefault();
+    e.preventDefault();
+    if (userType === "Admin" && passKey !== "SuperDuperUser") {
       toast.error("Invalid Passkey");
     } else {
-      e.preventDefault();
       axios
         .post(deployed, {
           name,
@@ -57,7 +56,6 @@ function Signup() {
   const handleNext = () => {
     const form = document.getElementById("signup-form");
     if (form.reportValidity()) {
-      console.log(userType);
       setStep(2);
     } else {
       toast.error("Please fill in all the required details.");
@@ -68,7 +66,6 @@ function Signup() {
     e.preventDefault();
     const form = document.getElementById("signup-form");
     if (form.reportValidity()) {
-      console.log(userType);
       handleSubmit(e);
     } else {
       toast.error("Please fill in all the required details.");
@@ -81,30 +78,36 @@ function Signup() {
       <div className="form-container">
         <h2>Register</h2>
         <form id="signup-form">
+          <div
+            className="progress-bar"
+            style={{ width: step === 1 ? "50%" : "100%" }}
+          ></div>
           {step === 1 && (
             <>
-              <div>
-                Register As
-                <input
-                  type="radio"
-                  name="UserType"
-                  autoComplete="off"
-                  value="User"
-                  onChange={(e) => setUserType(e.target.value)}
-                  required
-                />
-                User
-                <input
-                  type="radio"
-                  name="UserType"
-                  autoComplete="off"
-                  value="Admin"
-                  onChange={(e) => setUserType(e.target.value)}
-                  required
-                />
-                Admin
+              <div className="form-group">
+                <label>Register As</label>
+                <div>
+                  <input
+                    type="radio"
+                    name="UserType"
+                    autoComplete="off"
+                    value="User"
+                    onChange={(e) => setUserType(e.target.value)}
+                    required
+                  />
+                  User
+                  <input
+                    type="radio"
+                    name="UserType"
+                    autoComplete="off"
+                    value="Admin"
+                    onChange={(e) => setUserType(e.target.value)}
+                    required
+                  />
+                  Admin
+                </div>
               </div>
-              {userType == "Admin" ? (
+              {userType === "Admin" && (
                 <div className="form-group">
                   <label>PassKey</label>
                   <input
@@ -117,12 +120,9 @@ function Signup() {
                     required
                   />
                 </div>
-              ) : null}
-
+              )}
               <div className="form-group">
-                <label htmlFor="name">
-                  <strong>Name</strong>
-                </label>
+                <label htmlFor="name">Name</label>
                 <input
                   type="text"
                   placeholder="Enter Name"
@@ -134,9 +134,7 @@ function Signup() {
                 />
               </div>
               <div className="form-group">
-                <label htmlFor="email">
-                  <strong>Email</strong>
-                </label>
+                <label htmlFor="email">Email</label>
                 <input
                   type="email"
                   placeholder="Enter Email"
@@ -148,9 +146,7 @@ function Signup() {
                 />
               </div>
               <div className="form-group">
-                <label htmlFor="password">
-                  <strong>Password</strong>
-                </label>
+                <label htmlFor="password">Password</label>
                 <input
                   type="password"
                   placeholder="Enter Password"
@@ -168,9 +164,7 @@ function Signup() {
           {step === 2 && (
             <>
               <div className="form-group">
-                <label htmlFor="company">
-                  <strong>What is your current company name?</strong>
-                </label>
+                <label htmlFor="company">Company Name</label>
                 <input
                   type="text"
                   placeholder="Enter Company Name"
@@ -182,9 +176,7 @@ function Signup() {
                 />
               </div>
               <div className="form-group">
-                <label htmlFor="country">
-                  <strong>Which Country are you currently working in:</strong>
-                </label>
+                <label htmlFor="country">Country</label>
                 <input
                   type="text"
                   placeholder="Enter Country Name"
@@ -196,9 +188,7 @@ function Signup() {
                 />
               </div>
               <div className="form-group">
-                <label htmlFor="city">
-                  <strong>Which City are you currently residing in:</strong>
-                </label>
+                <label htmlFor="city">City</label>
                 <input
                   type="text"
                   placeholder="Enter City Name"
@@ -210,11 +200,9 @@ function Signup() {
                 />
               </div>
               <div className="form-group">
-                <label htmlFor="salary">
-                  <strong>What is your salary? (in Euros)</strong>
-                </label>
+                <label htmlFor="salary">Salary (in Euros)</label>
                 <input
-                  type="text"
+                  type="number"
                   autoComplete="off"
                   name="salary"
                   placeholder="In Euros"
@@ -240,7 +228,7 @@ function Signup() {
             </>
           )}
         </form>
-        <p>Already Have an Account</p>
+        <p>Already Have an Account?</p>
         <Link to="/login" className="link-button">
           Login
         </Link>

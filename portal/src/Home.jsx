@@ -116,16 +116,18 @@ function Home() {
     <div className="container">
       <ToastContainer />
       <div className="top-right">
+        <button className="button" onClick={handleLogout}>
+          Logout <FontAwesomeIcon icon="sign-out-alt" />
+        </button>
+      </div>
+      <div className="search-container">
         <input
           type="text"
-          placeholder="Search users..."
+          placeholder="Search name..."
           value={searchTerm}
           onChange={(e) => setSearchTerm(e.target.value)}
           className="search-input"
         />
-        <button className="button" onClick={handleLogout}>
-          Logout <FontAwesomeIcon icon="sign-out-alt" />
-        </button>
       </div>
 
       <div className="table-container">

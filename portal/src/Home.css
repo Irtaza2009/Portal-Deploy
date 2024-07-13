@@ -74,8 +74,16 @@ tr:hover {
   background-color: #45a049;
 }
 
+.search-container {
+  position: absolute;
+  top: 150px;
+
+  align-items: center;
+}
+
 .search-input {
   padding: 8px;
+  padding-right: 100px;
   margin-right: 10px;
   border: 1px solid #ccc;
   border-radius: 4px;
