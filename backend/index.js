@@ -71,7 +71,7 @@ app.post("/login", (req, res) => {
           });
           res.cookie("token", token, {
             httpOnly: true,
-            secure: true, // Set secure to true if using HTTPS
+            //secure: true, // Set secure to true if using HTTPS
             sameSite: "None",
           });
           res.json("Successfully Logged In");
@@ -119,35 +119,15 @@ app.get("/getUsers", (req, res) => {
     .catch((err) => res.json(err));
 });
 
-app.post("/userData", async (req, res) => {
-  const { token } = req.body;
-  try {
-    const user = jwt.verify(token, JWT_SECRET, (err, res) => {
-      if (err) {
-        return "token expired";
-      }
-      return res;
-    });
-    console.log(user);
-    if (user == "token expired") {
-      return res.send({ status: "error", data: "token expired" });
-    }
-
-    const useremail = user.email;
-    User.findOne({ email: useremail })
-      .then((data) => {
-        res.send({ status: "ok", data: data });
-      })
-      .catch((error) => {
-        res.send({ status: "error", data: error });
-      });
-  } catch (error) {}
-});
-
 // Authenticated route
 app.get("/home", verifyUser, (req, res) => {
   console.log("Request received for /home");
   return res.json("You are authenticated");
+});
+
+app.get("/logout", (req, res) => {
+  res.clearCookie("token");
+  return res.json({ status: true });
 });
 
 app.listen(3007, () => {

@@ -19,7 +19,7 @@ function Login() {
   const handleSubmit = (e) => {
     e.preventDefault();
     axios
-      .post(deployed, { email, password })
+      .post(local, { email, password })
       .then((result) => {
         if (result.data === "Successfully Logged In") {
           toast.success("Successfully Logged In!");

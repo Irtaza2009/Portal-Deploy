@@ -13,6 +13,9 @@ var deployedHome = "https://deploy-portal-api.vercel.app/home";
 var localGet = "http://localhost:3007/getUsers";
 var deployedGet = "https://deploy-portal-api.vercel.app/getUsers";
 
+var localLogOut = "http://localhost:3007/logout";
+var deployedLogOut = "https://deploy-portal-api.vercel.app/logout";
+
 function Home() {
   const [users, setUsers] = useState([]);
   const [sortConfig, setSortConfig] = useState({
@@ -20,20 +23,18 @@ function Home() {
     direction: "ascending",
   });
 
-  const [admin, setAdmin] = useState("");
-
   const navigate = useNavigate();
 
   axios.defaults.withCredentials = true;
 
   useEffect(() => {
     axios
-      .get(deployedHome)
+      .get(local)
       .then((result) => {
         console.log(result.data);
         if (result.data === "You are authenticated") {
           axios
-            .get(deployedGet)
+            .get(localGet)
             .then((response) => {
               setUsers(response.data);
               console.log(response.data);
@@ -48,6 +49,20 @@ function Home() {
         navigate("/login");
       });
   }, [navigate]);
+
+  const handleLogout = () => {
+    axios
+      .get(localLogOut)
+      .then((res) => {
+        console.log(res.data);
+        if (res.data.status) {
+          navigate("/login");
+        }
+      })
+      .catch((err) => {
+        console.log(err);
+      });
+  };
 
   const sortUsers = (key) => {
     let direction = "ascending";
@@ -92,6 +107,7 @@ function Home() {
   return (
     <div className="container">
       <ToastContainer />
+      <button onClick={handleLogout}>Logout</button>
       <div className="table-container">
         <table>
           <thead>
