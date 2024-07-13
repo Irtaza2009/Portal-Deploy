@@ -6,7 +6,7 @@ import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import Select from "react-select";
 import countryList from "react-select-country-list";
-import cities from "./cities.json"; // Sample list of cities
+import citiesData from "./cities.json"; // Sample list of cities
 import "./Signup.css";
 
 var deployed = "https://deploy-portal-api.vercel.app/register";
@@ -28,7 +28,15 @@ function Signup() {
 
   const countryOptions = countryList().getData();
 
-  axios.defaults.withCredentials = true;
+  const getCitiesByCountry = (country) => {
+    if (!country) return [];
+    return citiesData[country.value] || [];
+  };
+
+  const handleCountryChange = (selectedCountry) => {
+    setCountry(selectedCountry);
+    setCity(null); // Reset city when country changes
+  };
 
   const handleSubmit = (e) => {
     e.preventDefault();
@@ -184,7 +192,7 @@ function Signup() {
                 <Select
                   options={countryOptions}
                   value={country}
-                  onChange={(option) => setCountry(option)}
+                  onChange={handleCountryChange}
                   placeholder="Select Country"
                   isClearable
                   required
@@ -193,7 +201,7 @@ function Signup() {
               <div className="form-group">
                 <label htmlFor="city">City</label>
                 <Select
-                  options={cities}
+                  options={getCitiesByCountry(country)}
                   value={city}
                   onChange={(option) => setCity(option)}
                   placeholder="Select City"
