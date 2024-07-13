@@ -7,6 +7,7 @@ import {
   faSignInAlt,
   faShare,
   faCopy,
+  faTimes,
 } from "@fortawesome/free-solid-svg-icons";
 import {
   faFacebook,
@@ -66,8 +67,18 @@ function About() {
           <FontAwesomeIcon icon={faShare} className="icon" />
           {showPopover && (
             <div className="popover">
-              <input type="text" value={urlToCopy} readOnly />
-              <button onClick={copyUrlToClipboard}>
+              <FontAwesomeIcon
+                icon={faTimes}
+                className="close"
+                onClick={closePopover}
+              />
+              <input
+                type="text"
+                className="url-input"
+                value={urlToCopy}
+                readOnly
+              />
+              <button className="copy-button" onClick={copyUrlToClipboard}>
                 <FontAwesomeIcon icon={faCopy} /> Copy URL
               </button>
               <div className="social-icons">
