@@ -29,12 +29,12 @@ function Home() {
 
   useEffect(() => {
     axios
-      .get(local)
+      .get(deployedHome)
       .then((result) => {
         console.log(result.data);
         if (result.data === "You are authenticated") {
           axios
-            .get(localGet)
+            .get(deployedGet)
             .then((response) => {
               setUsers(response.data);
               console.log(response.data);
@@ -52,7 +52,7 @@ function Home() {
 
   const handleLogout = () => {
     axios
-      .get(localLogOut)
+      .get(deployedLogOut)
       .then((res) => {
         console.log(res.data);
         if (res.data.status) {
