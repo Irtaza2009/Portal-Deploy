@@ -7,6 +7,8 @@ import "react-toastify/dist/ReactToastify.css";
 import { ToastContainer } from "react-toastify";
 import { useNavigate } from "react-router-dom";
 
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+
 var local = "http://localhost:3007/home";
 var deployedHome = "https://deploy-portal-api.vercel.app/home";
 
@@ -107,7 +109,12 @@ function Home() {
   return (
     <div className="container">
       <ToastContainer />
-      <button onClick={handleLogout}>Logout</button>
+      <div className="top-right">
+        <button onClick={handleLogout}>
+          <FontAwesomeIcon icon="fa-solid fa-right-from-bracket" />
+          Logout
+        </button>
+      </div>
       <div className="table-container">
         <table>
           <thead>

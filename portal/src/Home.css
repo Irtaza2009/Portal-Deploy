@@ -55,3 +55,23 @@ tr:nth-child(even) {
 tr:hover {
   background-color: #ddd;
 }
+
+.top-right {
+  position: absolute;
+  top: 20px; /* Adjust top position as needed */
+  right: 20px; /* Adjust right position as needed */
+}
+
+.button {
+  background-color: #4caf50;
+  color: white;
+  border: none;
+  padding: 10px 20px;
+  cursor: pointer;
+  border-radius: 4px;
+  font-size: 14px;
+}
+
+.button:hover {
+  background-color: #45a049;
+}
