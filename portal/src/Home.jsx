@@ -111,8 +111,8 @@ function Home() {
       <ToastContainer />
       <div className="top-right">
         <button onClick={handleLogout}>
-          <FontAwesomeIcon icon="fa-solid fa-right-from-bracket" />
           Logout
+          <FontAwesomeIcon icon="fa-solid fa-right-from-bracket" />
         </button>
       </div>
       <div className="table-container">

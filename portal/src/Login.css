@@ -9,6 +9,7 @@
   justify-content: center;
   align-items: center;
   height: 100vh;
+  background-color: #f8f9fa; /* Adjusted background color for readability */
 }
 
 .form-container {
@@ -37,7 +38,7 @@
   width: 100%;
   padding: 10px;
   border: 1px solid #ced4da;
-  border-radius: 0;
+  border-radius: 4px;
   margin-top: 5px;
 }
 
@@ -46,22 +47,40 @@
   outline: none;
 }
 
-button,
-.link-button {
-  display: block;
-  width: 100%;
-  padding: 10px;
+.password-input {
+  position: relative;
+}
+
+.password-input input {
+  padding-right: 40px; /* Increased padding for toggle button */
+}
+
+.toggle-password {
+  position: absolute;
+  right: 10px;
+  top: 50%;
+  transform: translateY(-50%);
+  background: none;
   border: none;
-  border-radius: 0;
-  margin-top: 10px;
-  text-align: center;
-  text-decoration: none;
+  cursor: pointer;
+  color: #007bff; /* Adjusted to match primary color */
+}
+
+.toggle-password:hover {
+  text-decoration: underline;
 }
 
 .btn-login {
-  background-color: #28a745; /* Equivalent to Bootstrap btn-success */
+  display: block;
+  width: 100%;
+  padding: 10px;
+  background-color: #28a745;
   color: white;
+  border: none;
+  border-radius: 4px;
+  margin-top: 10px;
   cursor: pointer;
+  transition: background-color 0.3s ease;
 }
 
 .btn-login:hover {
@@ -69,9 +88,17 @@ button,
 }
 
 .link-button {
-  background-color: #f8f9fa; /* Equivalent to Bootstrap bg-light */
-  border: 1px solid #ced4da; /* Equivalent to Bootstrap border */
+  display: block;
+  width: 100%;
+  padding: 10px;
+  text-align: center;
+  text-decoration: none;
   color: black;
+  background-color: #f8f9fa;
+  border: 1px solid #ced4da;
+  border-radius: 4px;
+  margin-top: 10px;
+  transition: background-color 0.3s ease;
 }
 
 .link-button:hover {
@@ -79,6 +106,8 @@ button,
 }
 
 p {
-  margin-top: 10px;
   text-align: center;
+  margin-top: 10px;
+  font-size: 0.9rem; /* Adjusted font size for readability */
+  color: #6c757d; /* Adjusted color for better contrast */
 }

@@ -1,6 +1,10 @@
+// About.jsx
+
 import React from "react";
 import { useNavigate } from "react-router-dom";
 import "./App.css";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { faUsers, faSignInAlt } from "@fortawesome/free-solid-svg-icons";
 
 function About() {
   const navigate = useNavigate();
@@ -11,20 +15,23 @@ function About() {
       <p>
         We are a community of Pakistani tech professionals living in Europe. Our
         goal is to create a supportive network of individuals who share our
-        cultural background and passion for innovation. Please register or login
-        to view the data of Pakistani Techies in Europe 🇪🇺 🙏!
+        cultural background and passion for innovation. Join us to connect with
+        like-minded individuals and explore opportunities in Europe's tech
+        scene.
       </p>
       <div className="button-group">
         <button
           className="btn btn-primary"
           onClick={() => navigate("/register")}
         >
-          Register
+          <FontAwesomeIcon icon={faUsers} className="icon" />
+          Join Now
         </button>
         <button
           className="btn btn-secondary"
           onClick={() => navigate("/login")}
         >
+          <FontAwesomeIcon icon={faSignInAlt} className="icon" />
           Login
         </button>
       </div>
