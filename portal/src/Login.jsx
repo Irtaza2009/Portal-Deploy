@@ -55,6 +55,34 @@ function Login() {
               required
             />
           </div>
+          <form onSubmit={handleSubmit}>
+          <div className="form-group">
+            <label htmlFor="email">
+              <strong>Email</strong>
+            </label>
+            <input
+              type="email"
+              placeholder="Enter Email"
+              autoComplete="off"
+              name="email"
+              value={email}
+              onChange={(e) => setEmail(e.target.value)}
+              required
+            />
+          </div>
+          <div className="form-group">
+            <label htmlFor="password">
+              <strong>Password</strong>
+            </label>
+            <input
+              type="password"
+              placeholder="Enter Password"
+              name="password"
+              value={password}
+              onChange={(e) => setPassword(e.target.value)}
+              required
+            />
+          </div>
           <div className="form-group">
             <label htmlFor="password">
               <strong>Password</strong>
@@ -72,6 +100,10 @@ function Login() {
             Login
           </button>
         </form>
+        <p>Don't have an account?</p>
+        <Link to="/register" className="link-button">
+          Sign Up
+        </Link>
         <p>Don't have an account?</p>
         <Link to="/register" className="link-button">
           Sign Up
