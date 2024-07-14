@@ -5,6 +5,8 @@ import { useNavigate } from "react-router-dom";
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import Select from "react-select";
+
+import Creatable from "react-select/creatable";
 import countryList from "react-select-country-list";
 import citiesData from "./cities.json"; // Sample list of cities
 import "./Signup.css";
@@ -53,7 +55,7 @@ function Signup() {
           password,
           company,
           country: country.label,
-          city: city.label,
+          city: city ? city.label : null,
           salary,
           userType,
         })
@@ -203,12 +205,13 @@ function Signup() {
               </div>
               <div className="form-group">
                 <label htmlFor="city">City</label>
-                <Select
+                <Creatable
                   options={getCitiesByCountry(country)}
                   value={city}
                   onChange={(option) => setCity(option)}
-                  placeholder="Select City"
+                  placeholder="Select or Type City"
                   isClearable
+                  isSearchable
                   required
                 />
               </div>
