@@ -28,9 +28,12 @@ function Signup() {
 
   const countryOptions = countryList().getData();
 
-  const getCitiesByCountry = (country) => {
-    if (!country) return [];
-    return citiesData[country.value] || [];
+  const getCitiesByCountry = (selectedCountry) => {
+    if (!selectedCountry) return [];
+    const countryCities = citiesData[selectedCountry.label];
+    return countryCities
+      ? countryCities.map((city) => ({ label: city.label, value: city.value }))
+      : [];
   };
 
   const handleCountryChange = (selectedCountry) => {
