@@ -57,6 +57,7 @@ function Home() {
       .get(deployedLogOut)
       .then((res) => {
         if (res.data.status) {
+          console.log(res.data);
           navigate("/login");
         }
       })
