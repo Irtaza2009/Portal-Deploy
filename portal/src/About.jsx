@@ -22,6 +22,7 @@ function About() {
   const [showPopover, setShowPopover] = useState(false);
   const [copySuccess, setCopySuccess] = useState(false);
   const urlToCopy = window.location.href; // Get current URL
+  const message = "Join all Pakistani techies in Europe! ";
 
   const copyUrlToClipboard = () => {
     navigator.clipboard
@@ -85,7 +86,7 @@ function About() {
                 <a
                   href={`https://www.facebook.com/sharer/sharer.php?u=${encodeURIComponent(
                     urlToCopy
-                  )}`}
+                  )}&quote=${encodeURIComponent(message)}`}
                   target="_blank"
                   rel="noopener noreferrer"
                 >
@@ -94,7 +95,7 @@ function About() {
                 <a
                   href={`https://twitter.com/intent/tweet?url=${encodeURIComponent(
                     urlToCopy
-                  )}`}
+                  )}&text=${encodeURIComponent(message)}`}
                   target="_blank"
                   rel="noopener noreferrer"
                 >
@@ -103,7 +104,7 @@ function About() {
                 <a
                   href={`https://www.linkedin.com/sharing/share-offsite/?url=${encodeURIComponent(
                     urlToCopy
-                  )}`}
+                  )}&summary=${encodeURIComponent(message)}`}
                   target="_blank"
                   rel="noopener noreferrer"
                 >
