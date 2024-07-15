@@ -126,7 +126,10 @@ app.get("/home", verifyUser, (req, res) => {
 });
 
 app.get("/logout", (req, res) => {
-  res.clearCookie("token");
+  res.clearCookie("token", {
+    domain: "deploy-portal-api.vercel.app",
+    path: "/",
+  });
   return res.json({ status: true });
 });
 
