@@ -5,6 +5,7 @@ import { BrowserRouter, Routes, Route } from "react-router-dom";
 import Login from "./Login.jsx";
 import Home from "./Home.jsx";
 import About from "./About.jsx";
+import Analysis from "./Analysis.jsx";
 import "./App.css";
 
 import { library } from "@fortawesome/fontawesome-svg-core";
@@ -21,6 +22,7 @@ function App() {
         <Route path="/register" element={<Signup />} />
         <Route path="/login" element={<Login />} />
         <Route path="/home" element={<Home />} />
+        <Route path="/analysis" element={<Analysis />} />
       </Routes>
     </BrowserRouter>
   );

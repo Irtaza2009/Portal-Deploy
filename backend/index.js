@@ -18,7 +18,7 @@ app.use(
   cors({
     origin: [
       "https://deploy-portal-frontend.vercel.app",
-      "http://localhost:3006",
+      "http://localhost:3000",
       "https://pteu-data.mujtabamehdi.com",
     ], // Allow all origins
     methods: ["POST", "GET", "PUT", "DELETE", "OPTIONS"],

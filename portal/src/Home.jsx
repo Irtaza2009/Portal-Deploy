@@ -5,8 +5,9 @@ import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import { useNavigate } from "react-router-dom";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { Link } from "react-router-dom";
 
-var local = "http://localhost:3007/home";
+var localHome = "http://localhost:3007/home";
 var deployedHome = "https://deploy-portal-api.vercel.app/home";
 
 var localGet = "http://localhost:3007/getUsers";
@@ -30,11 +31,11 @@ function Home() {
 
   useEffect(() => {
     axios
-      .get(deployedHome)
+      .get(localHome)
       .then((result) => {
         if (result.data === "You are authenticated") {
           axios
-            .get(deployedGet)
+            .get(localGet)
             .then((response) => {
               setUsers(response.data);
             })
@@ -54,7 +55,7 @@ function Home() {
 
   const handleLogout = () => {
     axios
-      .get(deployedLogOut)
+      .get(localLogOut)
       .then((res) => {
         if (res.data.status) {
           console.log(res.data);
@@ -120,6 +121,9 @@ function Home() {
         <button className="button" onClick={handleLogout}>
           Logout <FontAwesomeIcon icon="sign-out-alt" />
         </button>
+        <Link to="/analysis" className="button">
+          Analysis
+        </Link>
       </div>
       <div className="search-container">
         <input
