@@ -12,6 +12,8 @@ import {
   ArcElement,
 } from "chart.js";
 
+import "./Analysis.css";
+
 ChartJS.register(
   CategoryScale,
   LinearScale,
@@ -30,7 +32,7 @@ function Analysis() {
 
   useEffect(() => {
     axios
-      .get(localGet)
+      .get(deployedGet)
       .then((response) => {
         setUsers(response.data);
       })
@@ -39,7 +41,7 @@ function Analysis() {
       });
   }, []);
 
-  const prepareChartData = () => {
+  const CompanyData = () => {
     const companyCounts = users.reduce((acc, user) => {
       acc[user.company] = (acc[user.company] || 0) + 1;
       return acc;
@@ -60,11 +62,64 @@ function Analysis() {
     };
   };
 
+  const CountryData = () => {
+    const countryCounts = users.reduce((acc, user) => {
+      acc[user.country] = (acc[user.country] || 0) + 1;
+      return acc;
+    }, {});
+
+    const countryLabels = Object.keys(countryCounts);
+    const countryData = Object.values(countryCounts);
+
+    return {
+      labels: countryLabels,
+      datasets: [
+        {
+          label: "Number of Techies",
+          data: countryData,
+          backgroundColor: "rgba(75, 192, 192, 0.6)",
+        },
+      ],
+    };
+  };
+
+  const SalaryData = () => {
+    const countrySalaries = users.reduce((acc, user) => {
+      const salary = parseFloat(user.salary.replace(/,/g, "") || 0);
+      if (!acc[user.country] || salary > acc[user.country]) {
+        acc[user.country] = salary;
+      }
+      return acc;
+    }, {});
+
+    const countryLabels = Object.keys(countrySalaries);
+    const countryData = Object.values(countrySalaries);
+
+    return {
+      labels: countryLabels,
+      datasets: [
+        {
+          label: "Highest Salary",
+          data: countryData,
+          backgroundColor: "rgba(75, 192, 192, 0.6)",
+        },
+      ],
+    };
+  };
+
   return (
     <div>
-      <h1>Analysis</h1>
+      <h1 className="title">Analysis</h1>
       <div style={{ width: "600px", margin: "auto" }}>
-        <Bar data={prepareChartData()} />
+        <div className="graph-container">
+          <Bar data={CompanyData()} />
+        </div>
+        <div className="graph-container">
+          <Bar data={CountryData()} />
+        </div>
+        <div className="graph-container">
+          <Bar data={SalaryData()} />
+        </div>
       </div>
     </div>
   );
