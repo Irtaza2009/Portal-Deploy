@@ -29,6 +29,7 @@ var deployedGet = "https://deploy-portal-api.vercel.app/getUsers";
 
 function Analysis() {
   const [users, setUsers] = useState([]);
+  const [loading, setLoading] = useState(true);
 
   useEffect(() => {
     axios
@@ -36,6 +37,7 @@ function Analysis() {
       .then((response) => {
         setUsers(response.data);
         console.log("Users fetched:", response.data);
+        setLoading(false);
       })
       .catch((err) => {
         console.error("Error fetching users:", err);
@@ -398,6 +400,19 @@ function Analysis() {
       ],
     };
   };
+
+  if (loading) {
+    return (
+      <div class="container">
+        <div class="newtons-cradle">
+          <div class="newtons-cradle__dot"></div>
+          <div class="newtons-cradle__dot"></div>
+          <div class="newtons-cradle__dot"></div>
+          <div class="newtons-cradle__dot"></div>
+        </div>
+      </div>
+    );
+  }
 
   return (
     <div>
