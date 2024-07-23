@@ -41,22 +41,72 @@ function Analysis() {
       });
   }, []);
 
+  const getEditDistance = (a, b) => {
+    const matrix = [];
+
+    for (let i = 0; i <= b.length; i++) {
+      matrix[i] = [i];
+    }
+
+    for (let j = 0; j <= a.length; j++) {
+      matrix[0][j] = j;
+    }
+
+    for (let i = 1; i <= b.length; i++) {
+      for (let j = 1; j <= a.length; j++) {
+        if (b.charAt(i - 1) === a.charAt(j - 1)) {
+          matrix[i][j] = matrix[i - 1][j - 1];
+        } else {
+          matrix[i][j] = Math.min(
+            matrix[i - 1][j - 1] + 1,
+            Math.min(matrix[i][j - 1] + 1, matrix[i - 1][j] + 1)
+          );
+        }
+      }
+    }
+
+    return matrix[b.length][a.length];
+  };
+
+  const areSimilar = (str1, str2, threshold = 3) => {
+    return getEditDistance(str1.toLowerCase(), str2.toLowerCase()) <= threshold;
+  };
+
   const CompanyData = () => {
     const companyCounts = users.reduce((acc, user) => {
       acc[user.company] = (acc[user.company] || 0) + 1;
       return acc;
     }, {});
 
-    const companyLabels = Object.keys(companyCounts);
-    const companyData = Object.values(companyCounts);
+    // Convert companyCounts object to an array of [company, count] pairs
+    const sortedCompanyCounts = Object.entries(companyCounts).sort(
+      (a, b) => b[1] - a[1]
+    );
+
+    // Select the top 10 companies
+    const top10Companies = sortedCompanyCounts.slice(0, 10);
+
+    const companyLabels = top10Companies.map((company) => company[0]);
+    const companyData = top10Companies.map((company) => company[1]);
 
     return {
       labels: companyLabels,
       datasets: [
         {
-          label: "Number of Employees",
+          label: "Number of Employees/Company",
           data: companyData,
-          backgroundColor: "rgba(75, 192, 192, 0.6)",
+          backgroundColor: [
+            "rgba(75, 192, 192, 0.6)",
+            "rgba(54, 162, 235, 0.6)",
+            "rgba(255, 206, 86, 0.6)",
+            "rgba(75, 192, 192, 0.6)",
+            "rgba(153, 102, 255, 0.6)",
+            "rgba(255, 159, 64, 0.6)",
+            "rgba(255, 99, 132, 0.6)",
+            "rgba(255, 205, 86, 0.6)",
+            "rgba(75, 192, 192, 0.6)",
+            "rgba(54, 162, 235, 0.6)",
+          ],
         },
       ],
     };
@@ -75,9 +125,16 @@ function Analysis() {
       labels: countryLabels,
       datasets: [
         {
-          label: "Number of Techies",
+          label: "Number of Techies/Country",
           data: countryData,
-          backgroundColor: "rgba(75, 192, 192, 0.6)",
+          backgroundColor: [
+            "rgba(75, 192, 192, 0.6)",
+            "rgba(54, 162, 235, 0.6)",
+            "rgba(255, 206, 86, 0.6)",
+            "rgba(75, 192, 192, 0.6)",
+            "rgba(153, 102, 255, 0.6)",
+            "rgba(255, 159, 64, 0.6)",
+          ],
         },
       ],
     };
@@ -85,9 +142,13 @@ function Analysis() {
 
   const SalaryData = () => {
     const countrySalaries = users.reduce((acc, user) => {
-      const salary = parseFloat(user.salary.replace(/,/g, "") || 0);
-      if (!acc[user.country] || salary > acc[user.country]) {
-        acc[user.country] = salary;
+      if (user.salary) {
+        const salary = parseFloat(user.salary.replace(/,/g, ""));
+        if (salary > 0) {
+          if (!acc[user.country] || salary > acc[user.country]) {
+            acc[user.country] = salary;
+          }
+        }
       }
       return acc;
     }, {});
@@ -99,9 +160,16 @@ function Analysis() {
       labels: countryLabels,
       datasets: [
         {
-          label: "Highest Salary",
+          label: "Highest Salary/Country",
           data: countryData,
-          backgroundColor: "rgba(75, 192, 192, 0.6)",
+          backgroundColor: [
+            "rgba(75, 192, 192, 0.6)",
+            "rgba(54, 162, 235, 0.6)",
+            "rgba(255, 206, 86, 0.6)",
+            "rgba(75, 192, 192, 0.6)",
+            "rgba(153, 102, 255, 0.6)",
+            "rgba(255, 159, 64, 0.6)",
+          ],
         },
       ],
     };
@@ -115,7 +183,7 @@ function Analysis() {
           <Bar data={CompanyData()} />
         </div>
         <div className="graph-container">
-          <Bar data={CountryData()} />
+          <Pie data={CountryData()} />
         </div>
         <div className="graph-container">
           <Bar data={SalaryData()} />
