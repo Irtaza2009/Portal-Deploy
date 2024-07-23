@@ -402,13 +402,14 @@ function Analysis() {
   return (
     <div>
       <h1 className="title">Analysis</h1>
-      <div style={{ width: "600px", margin: "auto" }}>
+      <div style={{ width: "50%", margin: "auto" }}>
         <div className="graph-container">
           <Bar data={NumberOfEmployeesByCompany()} />
         </div>
         <div className="graph-container">
           <Pie data={NumberOfEmployeesByCountry()} />
         </div>
+
         <div className="graph-container">
           <Bar data={HighestSalaryByCountry()} />
         </div>
@@ -421,12 +422,14 @@ function Analysis() {
             options={{ indexAxis: "y" }}
           />
         </div>
+        {/* <div className="graph-row">*/}
         <div className="graph-container">
           <Bar data={AverageSalaryByCities()} />
         </div>
         <div className="graph-container">
           <Bar data={NumberOfEmployeesByCity()} />
         </div>
+        {/*</div>*/}
       </div>
     </div>
   );
