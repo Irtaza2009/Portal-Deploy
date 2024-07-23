@@ -151,11 +151,11 @@ function Analysis() {
     const cityData = top10Cities.map((city) => city[1]);
 
     return {
-      labels: companyLabels,
+      labels: cityLabels,
       datasets: [
         {
-          label: "Number of Employees by Company",
-          data: companyData,
+          label: "Number of Employees by City",
+          data: cityData,
           backgroundColor: [
             "rgba(75, 192, 192, 0.6)",
             "rgba(54, 162, 235, 0.6)",
@@ -195,6 +195,56 @@ function Analysis() {
             "rgba(75, 192, 192, 0.6)",
             "rgba(153, 102, 255, 0.6)",
             "rgba(255, 159, 64, 0.6)",
+          ],
+        },
+      ],
+    };
+  };
+
+  const NumberOfEmployeesByCountry = () => {
+    const countryCounts = users.reduce((acc, user) => {
+      let countryFound = false;
+      for (let country in acc) {
+        if (areSimilar(country, user.country)) {
+          acc[country] = (acc[country] || 0) + 1;
+          countryFound = true;
+          break;
+        }
+      }
+      if (!countryFound) {
+        acc[user.country] = (acc[user.country] || 0) + 1;
+      }
+      return acc;
+    }, {});
+
+    // Convert companyCounts object to an array of [company, count] pairs
+    const sortedCountryCounts = Object.entries(countryCounts).sort(
+      (a, b) => b[1] - a[1]
+    );
+
+    // Select the top 10 companies
+    const top10Countries = sortedCountryCounts.slice(0, 10);
+
+    const countryLabels = top10Countries.map((country) => country[0]);
+    const countryData = top10Countries.map((country) => country[1]);
+
+    return {
+      labels: countryLabels,
+      datasets: [
+        {
+          label: "Number of Employees by Country",
+          data: countryData,
+          backgroundColor: [
+            "rgba(75, 192, 192, 0.6)",
+            "rgba(54, 162, 235, 0.6)",
+            "rgba(255, 206, 86, 0.6)",
+            "rgba(75, 192, 192, 0.6)",
+            "rgba(153, 102, 255, 0.6)",
+            "rgba(255, 159, 64, 0.6)",
+            "rgba(255, 99, 132, 0.6)",
+            "rgba(255, 205, 86, 0.6)",
+            "rgba(75, 192, 192, 0.6)",
+            "rgba(54, 162, 235, 0.6)",
           ],
         },
       ],
@@ -357,7 +407,7 @@ function Analysis() {
           <Bar data={NumberOfEmployeesByCompany()} />
         </div>
         <div className="graph-container">
-          <Pie data={NumberOfTechiesByCountry()} />
+          <Pie data={NumberOfEmployeesByCountry()} />
         </div>
         <div className="graph-container">
           <Bar data={HighestSalaryByCountry()} />
@@ -373,6 +423,9 @@ function Analysis() {
         </div>
         <div className="graph-container">
           <Bar data={AverageSalaryByCities()} />
+        </div>
+        <div className="graph-container">
+          <Bar data={NumberOfEmployeesByCity()} />
         </div>
       </div>
     </div>
