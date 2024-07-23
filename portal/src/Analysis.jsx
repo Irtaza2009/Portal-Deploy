@@ -73,7 +73,7 @@ function Analysis() {
     return getEditDistance(str1.toLowerCase(), str2.toLowerCase()) <= threshold;
   };
 
-  const CompanyData = () => {
+  const NumberOfEmployeesByCompany = () => {
     const companyCounts = users.reduce((acc, user) => {
       let companyFound = false;
       for (let company in acc) {
@@ -123,7 +123,57 @@ function Analysis() {
     };
   };
 
-  const CountryData = () => {
+  const NumberOfEmployeesByCity = () => {
+    const cityCounts = users.reduce((acc, user) => {
+      let cityFound = false;
+      for (let city in acc) {
+        if (areSimilar(city, user.city)) {
+          acc[city] = (acc[city] || 0) + 1;
+          cityFound = true;
+          break;
+        }
+      }
+      if (!cityFound) {
+        acc[user.city] = (acc[user.city] || 0) + 1;
+      }
+      return acc;
+    }, {});
+
+    // Convert companyCounts object to an array of [company, count] pairs
+    const sortedCityCounts = Object.entries(cityCounts).sort(
+      (a, b) => b[1] - a[1]
+    );
+
+    // Select the top 10 companies
+    const top10Cities = sortedCityCounts.slice(0, 10);
+
+    const cityLabels = top10Cities.map((city) => city[0]);
+    const cityData = top10Cities.map((city) => city[1]);
+
+    return {
+      labels: companyLabels,
+      datasets: [
+        {
+          label: "Number of Employees by Company",
+          data: companyData,
+          backgroundColor: [
+            "rgba(75, 192, 192, 0.6)",
+            "rgba(54, 162, 235, 0.6)",
+            "rgba(255, 206, 86, 0.6)",
+            "rgba(75, 192, 192, 0.6)",
+            "rgba(153, 102, 255, 0.6)",
+            "rgba(255, 159, 64, 0.6)",
+            "rgba(255, 99, 132, 0.6)",
+            "rgba(255, 205, 86, 0.6)",
+            "rgba(75, 192, 192, 0.6)",
+            "rgba(54, 162, 235, 0.6)",
+          ],
+        },
+      ],
+    };
+  };
+
+  const NumberOfTechiesByCountry = () => {
     const countryCounts = users.reduce((acc, user) => {
       acc[user.country] = (acc[user.country] || 0) + 1;
       return acc;
@@ -151,7 +201,7 @@ function Analysis() {
     };
   };
 
-  const SalaryData = () => {
+  const HighestSalaryByCountry = () => {
     const countrySalaries = users.reduce((acc, user) => {
       if (user.salary) {
         const salary = parseFloat(user.salary.replace(/,/g, ""));
@@ -266,18 +316,51 @@ function Analysis() {
     };
   };
 
+  const AverageSalaryByCities = () => {
+    const citySalaries = users.reduce((acc, user) => {
+      const salaryStr = user.salary && user.salary.replace(/,/g, "");
+      const salary = parseFloat(salaryStr);
+
+      if (!isNaN(salary) && salary > 0) {
+        if (!acc[user.city]) {
+          acc[user.city] = { totalSalary: 0, count: 0 };
+        }
+        acc[user.city].totalSalary += salary;
+        acc[user.city].count += 1;
+      }
+
+      return acc;
+    }, {});
+
+    const cityLabels = Object.keys(citySalaries);
+    const cityData = cityLabels.map(
+      (city) => citySalaries[city].totalSalary / citySalaries[city].count
+    );
+
+    return {
+      labels: cityLabels,
+      datasets: [
+        {
+          label: "Average Salary by City",
+          data: cityData,
+          backgroundColor: "rgba(75, 192, 192, 0.6)",
+        },
+      ],
+    };
+  };
+
   return (
     <div>
       <h1 className="title">Analysis</h1>
       <div style={{ width: "600px", margin: "auto" }}>
         <div className="graph-container">
-          <Bar data={CompanyData()} />
+          <Bar data={NumberOfEmployeesByCompany()} />
         </div>
         <div className="graph-container">
-          <Pie data={CountryData()} />
+          <Pie data={NumberOfTechiesByCountry()} />
         </div>
         <div className="graph-container">
-          <Bar data={SalaryData()} />
+          <Bar data={HighestSalaryByCountry()} />
         </div>
         <div className="graph-container">
           <Bar data={AverageSalaryByCountry()} />
@@ -287,6 +370,9 @@ function Analysis() {
             data={Top10CompaniesByAverageSalary()}
             options={{ indexAxis: "y" }}
           />
+        </div>
+        <div className="graph-container">
+          <Bar data={AverageSalaryByCities()} />
         </div>
       </div>
     </div>
