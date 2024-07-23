@@ -50,7 +50,7 @@ function Signup() {
       toast.error("Invalid Passkey");
     } else {
       axios
-        .post(local, {
+        .post(deployed, {
           name,
           email,
           password,

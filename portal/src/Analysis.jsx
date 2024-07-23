@@ -35,6 +35,7 @@ function Analysis() {
       .get(deployedGet)
       .then((response) => {
         setUsers(response.data);
+        console.log("Users fetched:", response.data);
       })
       .catch((err) => {
         console.error("Error fetching users:", err);
@@ -103,7 +104,7 @@ function Analysis() {
       labels: companyLabels,
       datasets: [
         {
-          label: "Number of Employees/Company",
+          label: "Number of Employees by Company",
           data: companyData,
           backgroundColor: [
             "rgba(75, 192, 192, 0.6)",
@@ -135,7 +136,7 @@ function Analysis() {
       labels: countryLabels,
       datasets: [
         {
-          label: "Number of Techies/Country",
+          label: "Number of Techies by Country",
           data: countryData,
           backgroundColor: [
             "rgba(75, 192, 192, 0.6)",
@@ -170,7 +171,7 @@ function Analysis() {
       labels: countryLabels,
       datasets: [
         {
-          label: "Highest Salary/Country",
+          label: "Highest Salary by Country",
           data: countryData,
           backgroundColor: [
             "rgba(75, 192, 192, 0.6)",
@@ -187,14 +188,17 @@ function Analysis() {
 
   const AverageSalaryByCountry = () => {
     const countrySalaries = users.reduce((acc, user) => {
-      const salary = parseFloat(user.salary.replace(/,/g, "") || 0);
-      if (salary > 0) {
+      const salaryStr = user.salary && user.salary.replace(/,/g, "");
+      const salary = parseFloat(salaryStr);
+
+      if (!isNaN(salary) && salary > 0) {
         if (!acc[user.country]) {
           acc[user.country] = { totalSalary: 0, count: 0 };
         }
         acc[user.country].totalSalary += salary;
         acc[user.country].count += 1;
       }
+
       return acc;
     }, {});
 
@@ -203,12 +207,59 @@ function Analysis() {
       (country) =>
         countrySalaries[country].totalSalary / countrySalaries[country].count
     );
+
     return {
       labels: countryLabels,
       datasets: [
         {
           label: "Average Salary by Country",
           data: countryData,
+          backgroundColor: "rgba(75, 192, 192, 0.6)",
+        },
+      ],
+    };
+  };
+
+  const Top10CompaniesByAverageSalary = () => {
+    const companySalaries = users.reduce((acc, user) => {
+      const salaryStr = user.salary && user.salary.replace(/,/g, "");
+      const salary = parseFloat(salaryStr);
+
+      if (!isNaN(salary) && salary > 0) {
+        let companyFound = false;
+        for (let company in acc) {
+          if (areSimilar(company, user.company)) {
+            acc[company].totalSalary += salary;
+            acc[company].count += 1;
+            companyFound = true;
+            break;
+          }
+        }
+        if (!companyFound) {
+          acc[user.company] = { totalSalary: salary, count: 1 };
+        }
+      }
+
+      return acc;
+    }, {});
+
+    // Convert companySalaries object to an array of [company, avgSalary] pairs
+    const avgSalaries = Object.entries(companySalaries).map(
+      ([company, { totalSalary, count }]) => [company, totalSalary / count]
+    );
+
+    // Sort the array by average salary and select the top 10
+    const top10Companies = avgSalaries.sort((a, b) => b[1] - a[1]).slice(0, 10);
+
+    const companyLabels = top10Companies.map((company) => company[0]);
+    const companyData = top10Companies.map((company) => company[1]);
+
+    return {
+      labels: companyLabels,
+      datasets: [
+        {
+          label: "Average Salary by Company",
+          data: companyData,
           backgroundColor: "rgba(75, 192, 192, 0.6)",
         },
       ],
@@ -230,6 +281,12 @@ function Analysis() {
         </div>
         <div className="graph-container">
           <Bar data={AverageSalaryByCountry()} />
+        </div>
+        <div className="graph-container">
+          <Bar
+            data={Top10CompaniesByAverageSalary()}
+            options={{ indexAxis: "y" }}
+          />
         </div>
       </div>
     </div>
