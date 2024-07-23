@@ -74,7 +74,17 @@ function Analysis() {
 
   const CompanyData = () => {
     const companyCounts = users.reduce((acc, user) => {
-      acc[user.company] = (acc[user.company] || 0) + 1;
+      let companyFound = false;
+      for (let company in acc) {
+        if (areSimilar(company, user.company)) {
+          acc[company] = (acc[company] || 0) + 1;
+          companyFound = true;
+          break;
+        }
+      }
+      if (!companyFound) {
+        acc[user.company] = (acc[user.company] || 0) + 1;
+      }
       return acc;
     }, {});
 
@@ -175,6 +185,36 @@ function Analysis() {
     };
   };
 
+  const AverageSalaryByCountry = () => {
+    const countrySalaries = users.reduce((acc, user) => {
+      const salary = parseFloat(user.salary.replace(/,/g, "") || 0);
+      if (salary > 0) {
+        if (!acc[user.country]) {
+          acc[user.country] = { totalSalary: 0, count: 0 };
+        }
+        acc[user.country].totalSalary += salary;
+        acc[user.country].count += 1;
+      }
+      return acc;
+    }, {});
+
+    const countryLabels = Object.keys(countrySalaries);
+    const countryData = countryLabels.map(
+      (country) =>
+        countrySalaries[country].totalSalary / countrySalaries[country].count
+    );
+    return {
+      labels: countryLabels,
+      datasets: [
+        {
+          label: "Average Salary by Country",
+          data: countryData,
+          backgroundColor: "rgba(75, 192, 192, 0.6)",
+        },
+      ],
+    };
+  };
+
   return (
     <div>
       <h1 className="title">Analysis</h1>
@@ -187,6 +227,9 @@ function Analysis() {
         </div>
         <div className="graph-container">
           <Bar data={SalaryData()} />
+        </div>
+        <div className="graph-container">
+          <Bar data={AverageSalaryByCountry()} />
         </div>
       </div>
     </div>

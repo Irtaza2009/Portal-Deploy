@@ -12,6 +12,7 @@ import citiesData from "./cities.json"; // Sample list of cities
 import "./Signup.css";
 
 var deployed = "https://deploy-portal-api.vercel.app/register";
+var local = "http://localhost:3007/register";
 
 function Signup() {
   const [step, setStep] = useState(1); // State to manage form steps
@@ -49,7 +50,7 @@ function Signup() {
       toast.error("Invalid Passkey");
     } else {
       axios
-        .post(deployed, {
+        .post(local, {
           name,
           email,
           password,
