@@ -6,7 +6,7 @@
 
 body {
   /*font-family: "Roboto Mono", monospace;*/
-  font-family: comic sans ms;
+  font-family: "Roboto", sans-serif;
   background-color: #4f4d4d;
   color: black;
 }
@@ -94,4 +94,21 @@ tr:hover {
 .search-input:focus {
   outline: none;
   border-color: #4caf50;
+}
+
+.refresh-button {
+  display: block;
+  margin: 20px auto;
+  padding: 10px 20px;
+  background-color: #28a745;
+  color: white;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  transition: background-color 0.3s;
+  width: auto;
+}
+
+.refresh-button:hover {
+  background-color: #218838;
 }

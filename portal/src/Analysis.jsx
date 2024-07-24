@@ -30,6 +30,18 @@ var deployedGet = "https://deploy-portal-api.vercel.app/getUsers";
 function Analysis() {
   const [users, setUsers] = useState([]);
   const [loading, setLoading] = useState(true);
+  const chartColors = [
+    "rgba(75, 192, 192, 0.6)",
+    "rgba(54, 162, 235, 0.6)",
+    "rgba(255, 206, 86, 0.6)",
+    "rgba(75, 192, 192, 0.6)",
+    "rgba(153, 102, 255, 0.6)",
+    "rgba(255, 159, 64, 0.6)",
+    "rgba(255, 99, 132, 0.6)",
+    "rgba(255, 205, 86, 0.6)",
+    "rgba(75, 192, 192, 0.6)",
+    "rgba(54, 162, 235, 0.6)",
+  ];
 
   useEffect(() => {
     axios
@@ -126,18 +138,7 @@ function Analysis() {
         {
           label: "Number of Employees by Company",
           data: companyData,
-          backgroundColor: [
-            "rgba(75, 192, 192, 0.6)",
-            "rgba(54, 162, 235, 0.6)",
-            "rgba(255, 206, 86, 0.6)",
-            "rgba(75, 192, 192, 0.6)",
-            "rgba(153, 102, 255, 0.6)",
-            "rgba(255, 159, 64, 0.6)",
-            "rgba(255, 99, 132, 0.6)",
-            "rgba(255, 205, 86, 0.6)",
-            "rgba(75, 192, 192, 0.6)",
-            "rgba(54, 162, 235, 0.6)",
-          ],
+          backgroundColor: chartColors,
         },
       ],
     };
@@ -176,18 +177,7 @@ function Analysis() {
         {
           label: "Number of Employees by City",
           data: cityData,
-          backgroundColor: [
-            "rgba(75, 192, 192, 0.6)",
-            "rgba(54, 162, 235, 0.6)",
-            "rgba(255, 206, 86, 0.6)",
-            "rgba(75, 192, 192, 0.6)",
-            "rgba(153, 102, 255, 0.6)",
-            "rgba(255, 159, 64, 0.6)",
-            "rgba(255, 99, 132, 0.6)",
-            "rgba(255, 205, 86, 0.6)",
-            "rgba(75, 192, 192, 0.6)",
-            "rgba(54, 162, 235, 0.6)",
-          ],
+          backgroundColor: chartColors,
         },
       ],
     };
@@ -254,18 +244,7 @@ function Analysis() {
         {
           label: "Number of Employees by Country",
           data: countryData,
-          backgroundColor: [
-            "rgba(75, 192, 192, 0.6)",
-            "rgba(54, 162, 235, 0.6)",
-            "rgba(255, 206, 86, 0.6)",
-            "rgba(75, 192, 192, 0.6)",
-            "rgba(153, 102, 255, 0.6)",
-            "rgba(255, 159, 64, 0.6)",
-            "rgba(255, 99, 132, 0.6)",
-            "rgba(255, 205, 86, 0.6)",
-            "rgba(75, 192, 192, 0.6)",
-            "rgba(54, 162, 235, 0.6)",
-          ],
+          backgroundColor: chartColors,
         },
       ],
     };
@@ -293,14 +272,7 @@ function Analysis() {
         {
           label: "Highest Salary by Country",
           data: countryData,
-          backgroundColor: [
-            "rgba(75, 192, 192, 0.6)",
-            "rgba(54, 162, 235, 0.6)",
-            "rgba(255, 206, 86, 0.6)",
-            "rgba(75, 192, 192, 0.6)",
-            "rgba(153, 102, 255, 0.6)",
-            "rgba(255, 159, 64, 0.6)",
-          ],
+          backgroundColor: chartColors,
         },
       ],
     };
@@ -334,7 +306,7 @@ function Analysis() {
         {
           label: "Average Salary by Country",
           data: countryData,
-          backgroundColor: "rgba(75, 192, 192, 0.6)",
+          backgroundColor: chartColors,
         },
       ],
     };
@@ -380,7 +352,7 @@ function Analysis() {
         {
           label: "Average Salary by Company",
           data: companyData,
-          backgroundColor: "rgba(75, 192, 192, 0.6)",
+          backgroundColor: chartColors,
         },
       ],
     };
@@ -413,7 +385,7 @@ function Analysis() {
         {
           label: "Average Salary by City",
           data: cityData,
-          backgroundColor: "rgba(75, 192, 192, 0.6)",
+          backgroundColor: chartColors,
         },
       ],
     };
@@ -432,12 +404,12 @@ function Analysis() {
 
   if (loading) {
     return (
-      <div class="container">
-        <div class="newtons-cradle">
-          <div class="newtons-cradle__dot"></div>
-          <div class="newtons-cradle__dot"></div>
-          <div class="newtons-cradle__dot"></div>
-          <div class="newtons-cradle__dot"></div>
+      <div className="container">
+        <div className="newtons-cradle">
+          <div className="newtons-cradle__dot"></div>
+          <div className="newtons-cradle__dot"></div>
+          <div className="newtons-cradle__dot"></div>
+          <div className="newtons-cradle__dot"></div>
         </div>
       </div>
     );
@@ -480,11 +452,11 @@ function Analysis() {
 
         {/* Custom Type Chart */}
 
-        <div className="chart-switcher">
-          <button onClick={() => setChartType("Bar")}>Bar Chart</button>
-          <button onClick={() => setChartType("Pie")}>Pie Chart</button>
-        </div>
         <div className="graph-container">
+          <div className="chart-switcher">
+            <button onClick={() => setChartType("Bar")}>Bar Chart</button>
+            <button onClick={() => setChartType("Pie")}>Pie Chart</button>
+          </div>
           {renderChart(AverageSalaryByCities())}
         </div>
       </div>

@@ -29,7 +29,7 @@ function Home() {
 
   axios.defaults.withCredentials = true;
 
-  useEffect(() => {
+  const fetchData = () => {
     axios
       .get(deployedHome)
       .then((result) => {
@@ -51,7 +51,7 @@ function Home() {
         console.error("Authentication error:", err);
         navigate("/login");
       });
-  }, [navigate]);
+  };
 
   const handleLogout = () => {
     axios
@@ -66,6 +66,14 @@ function Home() {
         console.error("Logout error:", err);
         toast.error("Failed to logout. Please try again.");
       });
+  };
+
+  useEffect(() => {
+    fetchData();
+  }, [navigate]);
+
+  const handleReload = () => {
+    fetchData();
   };
 
   const sortUsers = (key) => {
@@ -125,6 +133,9 @@ function Home() {
           Analysis
         </Link>
       </div>
+      <button className="refresh-button" onClick={handleReload}>
+        Refresh Data
+      </button>
       <div className="search-container">
         <input
           type="text"
