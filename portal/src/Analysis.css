@@ -171,21 +171,43 @@ body {
 }
 
 .chart-switcher {
-  text-align: center;
-  margin-bottom: 20px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin-top: 10px;
+  margin-bottom: 10px;
 }
 
 .chart-switcher button {
-  margin: 0 10px;
+  display: block;
+  margin: 20px auto;
   padding: 10px 20px;
-  background-color: #0072ff;
+  background-color: #28a745;
   color: white;
   border: none;
   border-radius: 5px;
   cursor: pointer;
   transition: background-color 0.3s;
+  width: auto;
 }
 
 .chart-switcher button:hover {
-  background-color: #005bb5;
+  background-color: #218838;
+}
+
+.refresh-button {
+  display: block;
+  margin: 20px auto;
+  padding: 10px 20px;
+  background-color: #28a745;
+  color: white;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  transition: background-color 0.3s;
+  width: auto;
+}
+
+.refresh-button:hover {
+  background-color: #218838;
 }

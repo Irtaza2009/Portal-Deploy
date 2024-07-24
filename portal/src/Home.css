@@ -5,7 +5,8 @@
 }
 
 body {
-  font-family: "Roboto Mono", monospace;
+  /*font-family: "Roboto Mono", monospace;*/
+  font-family: comic sans ms;
   background-color: #4f4d4d;
   color: black;
 }

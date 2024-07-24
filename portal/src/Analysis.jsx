@@ -44,6 +44,24 @@ function Analysis() {
       });
   }, []);
 
+  const fetchData = () => {
+    setLoading(true);
+    axios
+      .get(deployedGet)
+      .then((response) => {
+        setUsers(response.data);
+        console.log("Users fetched:", response.data);
+        setLoading(false);
+      })
+      .catch((err) => {
+        console.error("Error fetching users:", err);
+      });
+  };
+
+  useEffect(() => {
+    fetchData();
+  }, []);
+
   const getEditDistance = (a, b) => {
     const matrix = [];
 
@@ -401,27 +419,6 @@ function Analysis() {
     };
   };
 
-  const chartOptions = {
-    responsive: true,
-    plugins: {
-      legend: {
-        position: "top",
-      },
-      tooltip: {
-        callbacks: {
-          label: (context) => {
-            let label = context.dataset.label || "";
-            if (label) {
-              label += ": ";
-            }
-            label += context.parsed.y !== null ? context.parsed.y : "";
-            return label;
-          },
-        },
-      },
-    },
-  };
-
   const [chartType, setChartType] = useState("Bar");
 
   const renderChart = (data) => {
@@ -449,6 +446,10 @@ function Analysis() {
   return (
     <div>
       <h1 className="title">Analysis</h1>
+
+      <button className="refresh-button" onClick={fetchData}>
+        Refresh Data
+      </button>
       <div style={{ width: "50%", margin: "auto" }}>
         <div className="graph-container">
           <Bar data={NumberOfEmployeesByCompany()} />
@@ -474,7 +475,7 @@ function Analysis() {
           <Bar data={AverageSalaryByCities()} />
         </div>
         <div className="graph-container">
-          <Bar data={NumberOfEmployeesByCity()} options={chartOptions} />
+          <Bar data={NumberOfEmployeesByCity()} />
         </div>
 
         {/* Custom Type Chart */}
