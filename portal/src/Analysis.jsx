@@ -401,6 +401,38 @@ function Analysis() {
     };
   };
 
+  const chartOptions = {
+    responsive: true,
+    plugins: {
+      legend: {
+        position: "top",
+      },
+      tooltip: {
+        callbacks: {
+          label: (context) => {
+            let label = context.dataset.label || "";
+            if (label) {
+              label += ": ";
+            }
+            label += context.parsed.y !== null ? context.parsed.y : "";
+            return label;
+          },
+        },
+      },
+    },
+  };
+
+  const [chartType, setChartType] = useState("Bar");
+
+  const renderChart = (data) => {
+    switch (chartType) {
+      case "Pie":
+        return <Pie data={data} />;
+      default:
+        return <Bar data={data} />;
+    }
+  };
+
   if (loading) {
     return (
       <div class="container">
@@ -437,14 +469,23 @@ function Analysis() {
             options={{ indexAxis: "y" }}
           />
         </div>
-        {/* <div className="graph-row">*/}
+
         <div className="graph-container">
           <Bar data={AverageSalaryByCities()} />
         </div>
         <div className="graph-container">
-          <Bar data={NumberOfEmployeesByCity()} />
+          <Bar data={NumberOfEmployeesByCity()} options={chartOptions} />
         </div>
-        {/*</div>*/}
+
+        {/* Custom Type Chart */}
+
+        <div className="chart-switcher">
+          <button onClick={() => setChartType("Bar")}>Bar Chart</button>
+          <button onClick={() => setChartType("Pie")}>Pie Chart</button>
+        </div>
+        <div className="graph-container">
+          {renderChart(AverageSalaryByCities())}
+        </div>
       </div>
     </div>
   );
